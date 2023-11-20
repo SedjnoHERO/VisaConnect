@@ -1,4 +1,4 @@
-import { TouchableHighlight, Text, TouchableOpacity } from "react-native";
+import { TouchableHighlight, Text, TouchableOpacity, TextInput } from "react-native";
 import * as gStyle from "./globalStyle";
 
 export const Button_continue = ({ onPress, title, ButtonStyle, TextStyle, underlayColor }) => {
@@ -27,5 +27,16 @@ export const Button_skip = ({ onPress }) => {
                 Пропустить
             </Text>
         </TouchableOpacity>
+    );
+}
+
+export const Inputs = ({ TextPlaceHolder, valueInfo, ChangeText }) => {
+    return (
+        <TextInput
+            style={[gStyle.Inputs.Input, gStyle.Inputs.PlaceHolder]}
+            placeholder={TextPlaceHolder}
+            value={valueInfo}
+            onChangeText={ChangeText}
+        />
     );
 }

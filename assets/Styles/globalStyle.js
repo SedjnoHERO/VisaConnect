@@ -47,6 +47,11 @@ export const Texts = StyleSheet.create({
         fontSize: 32,
         color: TextColors.black,
     },
+    normal_ts: {
+        fontFamily: 'med',
+        fontSize: 18,
+        color: TextColors.black
+    }
 })
 
 export const Welcomes_location = StyleSheet.create({
@@ -65,9 +70,39 @@ export const Welcomes_location = StyleSheet.create({
     }
 })
 
+export const userLog = StyleSheet.create({
+    Inputs: {
+        left: 20,
+        top: 270,
+    },
+})
+
 export const gPage = StyleSheet.create({
     page: {
         backgroundColor: Colors.main_color,
         flex: 1,
+    }
+})
+
+export const Inputs = StyleSheet.create({
+    Input: {
+        width: 390,
+        height: 60,
+        borderRadius: 12,
+        borderWidth: 1,
+        borderColor: TextColors.black,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: 20,
+    },
+    PlaceHolder: {
+        fontFamily: 'reg',
+        fontSize: 20,
+        textAlign: 'center',
+        color: TextColors.black
+    },
+    textBefore: {
+        ...Texts.normal_ts,
+        marginBottom: 10
     }
 })

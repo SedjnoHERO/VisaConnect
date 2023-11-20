@@ -4,6 +4,7 @@ import WelcomeStep1 from '../screens/WelcomeScreens/WelcomeStep1';
 import WelcomeStep2 from "../screens/WelcomeScreens/WelcomeStep2";
 import WelcomeStep3 from "../screens/WelcomeScreens/WelcomeStep3";
 import Login from "../screens/Auth/LoginScreen";
+import SignUp from '../screens/Auth/SignUp';
 import React from "react";
 
 const Stack = createStackNavigator();
@@ -16,7 +17,7 @@ function App() {
                 <Stack.Screen name="WelcomeStep2" component={WelcomeStep2} options={{ headerShown: false }} />
                 <Stack.Screen name="WelcomeStep3" component={WelcomeStep3} options={{ headerShown: false }} />
                 <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
-
+                <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
             </Stack.Navigator>
         </NavigationContainer>
     );
