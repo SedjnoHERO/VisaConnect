@@ -4,10 +4,10 @@
     "slug": "VisaConnect",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/AppIcon.png",
+    "icon": "./assets/Images/AppIcon.png",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/Images/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#F8FBFF"
     },
@@ -19,12 +19,12 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/AppIcon.png",
+        "foregroundImage": "./assets/Images/AppIcon.png",
         "backgroundColor": "#F8FBFF"
       }
     },
     "web": {
-      "favicon": "./assets/AppIcon.png"
+      "favicon": "./assets/Images/AppIcon.png"
     }
   }
 }

@@ -1,34 +1,76 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
-import * as SQLite from "expo-sqlite";
-import { useState, useEffect } from "react";
+import React, { useEffect, useState } from 'react';
+import { Keyboard, Text, KeyboardAvoidingView, View, TouchableOpacity, ScrollView } from 'react-native';
+import * as gStyle from '../../assets/Styles/globalStyle';
+import { Inputs, Button_continue } from '../../assets/Styles/Consts';
+import { initializeDatabase, loginUser, InformationAbout } from './DataBase';
 
-export default function DB() {
-    const db = SQLite.openDatabase('example.db');
-    const [isLoading, setIsLoading] = useState(true);
-    const [names, setNames] = useState([]);
-    const [currentName, setCurrentName] = useState(undefined)
 
-    if (isLoading) {
-        return (
-            <View style={styles.container}>
-                <Text> Loading.. </Text>
-            </View>
-        )
-    }
+export default function SignUp({ navigation }) {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    useEffect(() => {
+        initializeDatabase();
+    }, []);
+
+    const handleEmailChange = text => {
+        setEmail(text);
+    };
+
+    const handlePasswordChange = text => {
+        setPassword(text);
+    };
+
+    const handleLogin = async () => {
+        try {
+            const loginResult = await loginUser(email, password);
+            console.log(loginResult);
+            navigation.navigate('Cards');
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     return (
-        <View style={styles.container}>
-            <Text>Hi</Text>
-            <StatusBar style="auto" />
-        </View >
-    )
+        <KeyboardAvoidingView
+            behavior='padding'
+            style={[gStyle.gPage.page, { flex: 1 }]}>
+            <TouchableOpacity onPress={Keyboard.dismiss} activeOpacity={1} style={{ flex: 1 }}>
+                <>
+                    <View style={gStyle.Welcomes_location.headlines_location}>
+                        <Text style={gStyle.Texts.headline_ts}>
+                            Авторизация
+                        </Text>
+                    </View>
+                    <ScrollView contentContainerStyle={{ flexGrow: 1 }} >
+                        <View style={gStyle.userLog.inputs_log}>
+                            <View style={{ marginLeft: 0, }}>
+                                <Text style={gStyle.Inputs.textBefore}>Введите вашу почту</Text>
+                                <Inputs
+                                    TextPlaceHolder={'Почта'}
+                                    ChangeText={handleEmailChange}
+                                    valueInfo={email}
+                                />
+                            </View>
+                            <View>
+                                <Text style={gStyle.Inputs.textBefore}>Введите пароль</Text>
+                                <Inputs
+                                    TextPlaceHolder={'Пароль'}
+                                    ChangeText={handlePasswordChange}
+                                    valueInfo={password}
+                                    secure={true}
+                                />
+                            </View>
+                            <Button_continue onPress={handleLogin} title='Авторизоваться' />
+                            <View style={{ flexDirection: 'column', alignItems: 'center', top: 15 }}>
+                                <Text style={gStyle.Texts.button_skip_ts}>Впервые пользуетесь?</Text>
+                                <TouchableOpacity style={{ top: 10 }} onPress={() => navigation.navigate('SignUp')}><Text style={gStyle.Texts.normal_ts}>Зарегистрироваться</Text></TouchableOpacity>
+                            </View>
+                        </View>
+                    </ScrollView>
+                    <InformationAbout />
+                </>
+            </TouchableOpacity>
+        </KeyboardAvoidingView >
+    );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: 'white',
-        alignItems: 'center',
-        justifyContent: 'center',
-    }
-})

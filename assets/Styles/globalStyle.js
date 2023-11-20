@@ -56,7 +56,7 @@ export const Texts = StyleSheet.create({
 
 export const Welcomes_location = StyleSheet.create({
     headlines_location: {
-        left: 20,
+        left: 11,
         top: 130,
     },
     buttons_location: {
@@ -71,10 +71,20 @@ export const Welcomes_location = StyleSheet.create({
 })
 
 export const userLog = StyleSheet.create({
-    Inputs: {
-        left: 20,
-        top: 270,
+    inputs_reg: {
+        top: 240,
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        flexDirection: 'column',
+        alignContent: 'center',
     },
+    inputs_log: {
+        top: 270,
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        flexDirection: 'column',
+        alignContent: 'center',
+    }
 })
 
 export const gPage = StyleSheet.create({
@@ -89,17 +99,20 @@ export const Inputs = StyleSheet.create({
         width: 390,
         height: 60,
         borderRadius: 12,
-        borderWidth: 1,
+        borderWidth: 0.4,
         borderColor: TextColors.black,
         alignItems: 'center',
         justifyContent: 'center',
         marginBottom: 20,
+
     },
     PlaceHolder: {
         fontFamily: 'reg',
         fontSize: 20,
-        textAlign: 'center',
+        textAlign: 'left',
+        paddingLeft: 20,
         color: TextColors.black
+
     },
     textBefore: {
         ...Texts.normal_ts,

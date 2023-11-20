@@ -1,41 +1,47 @@
-import React, { useState } from 'react';
-import { Keyboard, Text, TouchableWithoutFeedback, KeyboardAvoidingView, View, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Keyboard, Text, KeyboardAvoidingView, View, TouchableOpacity, ScrollView } from 'react-native';
 import * as gStyle from '../../assets/Styles/globalStyle';
 import { Inputs, Button_continue } from '../../assets/Styles/Consts';
-import * as SQlite from 'expo-sqlite';
+import { initializeDatabase, registerUser, InformationAbout, checkExistingEmail } from './DataBase';
 
-const db = SQlite.openDatabase('users.db');
-
-db.transaction(tx => {
-    tx.executeSql(
-        'CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, password TEXT)'
-    );
-});
-
-const registerUser = (username, password) => {
-    db.transaction(tx => {
-        tx.executeSql(
-            'INSERT INTO users (username, password) VALUES (?, ?)',
-            [username, password],
-            (_, results) => {
-                if (results.rowsAffected > 0) {
-                    console.log('Пользователь успешно загреистрирован');
-                } else {
-                    console.log('Ошибка при регистрации пользователя');
-                }
-            }
-        );
-    });
-};
 
 export default function SignUp({ navigation }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [isRegisterEnabled, setIsRegisterEnabled] = useState(false);
 
-    const handleEmailChange = text => {
+    useEffect(() => {
+        initializeDatabase();
+    }, []);
+
+    useEffect(() => {
+        const validateFields = () => {
+            setIsRegisterEnabled(
+                password === confirmPassword &&
+                password.length !== 0 &&
+                email.length !== 0
+            );
+        };
+
+        validateFields();
+    }, [email, password, confirmPassword]);
+
+    const handleEmailChange = async text => {
         setEmail(text);
+        try {
+            const emailExists = await checkExistingEmail(text);
+            setIsRegisterEnabled(
+                password === confirmPassword &&
+                password.length !== 0 &&
+                text.length !== 0 &&
+                !emailExists
+            );
+        } catch (error) {
+            console.log(error);
+        }
     };
+
 
     const handlePasswordChange = text => {
         setPassword(text);
@@ -45,18 +51,30 @@ export default function SignUp({ navigation }) {
         setConfirmPassword(text);
     };
 
-    const handleSignUp = () => {
-        if ((password === confirmPassword) && (length(password) != 0)) {
-            registerUser(email, password);
-        } else {
-            console.log('Пароли не совпадают');
+    const handleSignUp = async () => {
+        try {
+            if ((password === confirmPassword) && (password.length !== 0) && (email.length !== 0)) {
+                const emailExists = await checkExistingEmail(email);
+
+                if (emailExists) {
+                    console.log('Пользователь с такой почтой уже существует');
+                } else {
+                    await registerUser(email, password);
+                    navigation.navigate('Cards');
+                }
+            } else {
+                console.log('Ошибка при регистрации пользователя');
+            }
+        } catch (error) {
+            console.log(error);
         }
     };
+
 
     return (
         <KeyboardAvoidingView
             behavior='padding'
-            style={gStyle.gPage.page}>
+            style={[gStyle.gPage.page, { flex: 1 }]}>
             <TouchableOpacity onPress={Keyboard.dismiss} activeOpacity={1} style={{ flex: 1 }}>
                 <>
                     <View style={gStyle.Welcomes_location.headlines_location}>
@@ -64,35 +82,49 @@ export default function SignUp({ navigation }) {
                             Регистрация
                         </Text>
                     </View>
-                    <View style={gStyle.userLog.Inputs}>
-                        <View>
-                            <Text style={gStyle.Inputs.textBefore}>Введите вашу почту</Text>
-                            <Inputs
-                                TextPlaceHolder={'Почта'}
-                                ChangeText={handleEmailChange}
-                                valueInfo={email}
+                    <ScrollView contentContainerStyle={{ flexGrow: 1 }} >
+                        <View style={gStyle.userLog.inputs_reg}>
+                            <View>
+                                <Text style={gStyle.Inputs.textBefore}>Введите вашу почту</Text>
+                                <Inputs
+                                    TextPlaceHolder={'Почта'}
+                                    ChangeText={handleEmailChange}
+                                    valueInfo={email}
+                                />
+                            </View>
+                            <View>
+                                <Text style={gStyle.Inputs.textBefore}>Введите пароль</Text>
+                                <Inputs
+                                    TextPlaceHolder={'Пароль'}
+                                    ChangeText={handlePasswordChange}
+                                    valueInfo={password}
+                                    secure={true}
+                                />
+                            </View>
+                            <View>
+                                <Text style={gStyle.Inputs.textBefore}>Введите пароль повторно</Text>
+                                <Inputs
+                                    TextPlaceHolder={'Пароль'}
+                                    ChangeText={handleConfirmPasswordChange}
+                                    valueInfo={confirmPassword}
+                                    secure={true}
+                                />
+                            </View>
+                            <Button_continue
+                                ButtonStyle={{}}
+                                disabled={!isRegisterEnabled}
+                                onPress={handleSignUp}
+                                title='Зарегистрироваться'
                             />
+                            <View style={{ flexDirection: 'column', alignItems: 'center', top: 15 }}>
+                                <Text style={gStyle.Texts.button_skip_ts}>Уже зарегистрированы?</Text>
+                                <TouchableOpacity style={{ top: 10 }} onPress={() => navigation.navigate('Login')}><Text style={gStyle.Texts.normal_ts}>Войти</Text></TouchableOpacity>
+                            </View>
                         </View>
-                        <View>
-                            <Text style={gStyle.Inputs.textBefore}>Введите пароль</Text>
-                            <Inputs
-                                TextPlaceHolder={'Пароль'}
-                                ChangeText={handlePasswordChange}
-                                valueInfo={password}
-                            />
-                        </View>
-                        <View>
-                            <Text style={gStyle.Inputs.textBefore}>Введите пароль повторно</Text>
-                            <Inputs
-                                TextPlaceHolder={'Пароль'}
-                                ChangeText={handleConfirmPasswordChange}
-                                valueInfo={confirmPassword}
-                            />
-                        </View>
-                        <Button_continue onPress={handleSignUp} title='Зарегистрироваться' />
-                    </View>
+                    </ScrollView>
+                    <InformationAbout />
                 </>
             </TouchableOpacity>
-        </KeyboardAvoidingView>
+        </KeyboardAvoidingView >
     );
 }
