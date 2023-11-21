@@ -1,4 +1,4 @@
-import { TouchableHighlight, Text, TouchableOpacity, TextInput } from "react-native";
+import { TouchableHighlight, Text, TouchableOpacity, TextInput, View } from "react-native";
 import * as gStyle from "./globalStyle";
 
 export const Button_continue = ({ onPress, title, ButtonStyle, TextStyle, underlayColor, disabled }) => {
@@ -50,9 +50,32 @@ export const Inputs = ({ TextPlaceHolder, secure, valueInfo, ChangeText }) => {
             editable={true}
             onChangeText={ChangeText}
             autoCorrect={false}
-
             textContentType='none'
         />
     );
 }
 
+export const createCard = ({ }) => {
+    return (
+        <View>
+
+        </View>
+    );
+}
+
+export const CustomIcon = ({ focused, iconName, FolderName }) => {
+    const iconColor = focused ? gStyle.Colors.main_color : gStyle.TextColors.black;
+    const backgroundColor = focused ? gStyle.Colors.main_accent_color : gStyle.Colors.secondary_accent_color;
+
+    return (
+        <View style={[gStyle.BottomTabStyle.icon, { backgroundColor }]}>
+            <FolderName name={iconName} size={30} color={iconColor} />
+        </View>
+    );
+};
+
+export const InfoCells = ({ }) => {
+    return (
+        <Text>Hi</Text>
+    );
+}

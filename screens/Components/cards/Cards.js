@@ -1,6 +1,6 @@
 import react from "react";
 import { Text, View } from "react-native";
-import { Button_continue } from "../../assets/Styles/Consts";
+import { Button_continue } from "../../../assets/Styles/Consts";
 
 export default function Cards({ navigation }) {
     return (

@@ -21,7 +21,7 @@ export default function App() {
         setFont(true);
         await SplashScreen.preventAutoHideAsync();
       } catch (error) {
-        console.log('Шрифты', error)
+        console.log('Ошибка запуска', error)
       }
     }
     loadFonts();

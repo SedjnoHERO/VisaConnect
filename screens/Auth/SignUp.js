@@ -120,9 +120,8 @@ export default function SignUp({ navigation }) {
                             <TouchableOpacity style={{ top: 10 }} onPress={() => navigation.navigate('Login')}><Text style={gStyle.Texts.normal_ts}>Войти</Text></TouchableOpacity>
                         </View>
                     </View>
-                    <InformationAbout type={del} />
-                    <InformationAbout type={display} />
-
+                    <InformationAbout actionType='delete' />
+                    <InformationAbout actionType='display' />
                 </>
             </TouchableOpacity>
         </KeyboardAvoidingView >

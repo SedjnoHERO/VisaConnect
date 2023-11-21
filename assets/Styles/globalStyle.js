@@ -119,3 +119,28 @@ export const Inputs = StyleSheet.create({
         marginBottom: 10
     }
 })
+
+export const BottomTabStyle = StyleSheet.create({
+    navigator: {
+        position: 'absolute',
+        marginBottom: 20,
+        marginLeft: 20,
+        marginRight: 20,
+        height: 94,
+        backgroundColor: Colors.third_accent_color,
+        borderRadius: 32,
+        flexDirection: 'row',
+        borderTopWidth: 0,
+        flex: 1,
+        zIndex: 3,
+        paddingTop: 32,
+        paddingBottom: 32,
+    },
+    icon: {
+        width: 60,
+        height: 60,
+        borderRadius: 12,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+})

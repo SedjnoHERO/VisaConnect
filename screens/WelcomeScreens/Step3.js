@@ -3,7 +3,7 @@ import { View, Text } from 'react-native';
 import { Button_continue } from '../../assets/Styles/Consts';
 import * as gStyle from '../../assets/Styles/globalStyle';
 
-export default function WelcomeStep3({ navigation }) {
+export default function Step3({ navigation }) {
     return (
         <View style={gStyle.gPage.page}>
             <View style={gStyle.Welcomes_location.headlines_location}>

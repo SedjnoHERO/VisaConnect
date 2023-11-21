@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Keyboard, Text, KeyboardAvoidingView, View, TouchableOpacity, ScrollView } from 'react-native';
+import { Keyboard, Text, KeyboardAvoidingView, View, TouchableOpacity } from 'react-native';
 import * as gStyle from '../../assets/Styles/globalStyle';
 import { Inputs, Button_continue } from '../../assets/Styles/Consts';
 import { initializeDatabase, loginUser, InformationAbout } from './usersDB';
@@ -42,34 +42,33 @@ export default function SignUp({ navigation }) {
                             Авторизация
                         </Text>
                     </View>
-                    <ScrollView contentContainerStyle={{ flexGrow: 1 }} >
-                        <View style={gStyle.userLog.inputs_log}>
-                            <View style={{ marginLeft: 0, }}>
-                                <Text style={gStyle.Inputs.textBefore}>Введите вашу почту</Text>
-                                <Inputs
-                                    TextPlaceHolder={'Почта'}
-                                    ChangeText={handleEmailChange}
-                                    valueInfo={email}
-                                />
-                            </View>
-                            <View>
-                                <Text style={gStyle.Inputs.textBefore}>Введите пароль</Text>
-                                <Inputs
-                                    TextPlaceHolder={'Пароль'}
-                                    ChangeText={handlePasswordChange}
-                                    valueInfo={password}
-                                    secure={true}
-                                />
-                            </View>
-                            <Button_continue onPress={handleLogin} title='Авторизоваться' />
-                            <View style={{ flexDirection: 'column', alignItems: 'center', top: 15 }}>
-                                <Text style={gStyle.Texts.button_skip_ts}>Впервые пользуетесь?</Text>
-                                <TouchableOpacity style={{ top: 10 }} onPress={() => navigation.navigate('SignUp')}><Text style={gStyle.Texts.normal_ts}>Зарегистрироваться</Text></TouchableOpacity>
-                            </View>
+                    <View style={gStyle.userLog.inputs_log}>
+                        <View style={{ marginLeft: 0, }}>
+                            <Text style={gStyle.Inputs.textBefore}>Введите вашу почту</Text>
+                            <Inputs
+                                TextPlaceHolder={'Почта'}
+                                ChangeText={handleEmailChange}
+                                valueInfo={email}
+                            />
                         </View>
-                    </ScrollView>
-                    <InformationAbout type={del} />
-                    <InformationAbout type={display} />                </>
+                        <View>
+                            <Text style={gStyle.Inputs.textBefore}>Введите пароль</Text>
+                            <Inputs
+                                TextPlaceHolder={'Пароль'}
+                                ChangeText={handlePasswordChange}
+                                valueInfo={password}
+                                secure={true}
+                            />
+                        </View>
+                        <Button_continue onPress={handleLogin} title='Авторизоваться' />
+                        <View style={{ flexDirection: 'column', alignItems: 'center', top: 15 }}>
+                            <Text style={gStyle.Texts.button_skip_ts}>Впервые пользуетесь?</Text>
+                            <TouchableOpacity style={{ top: 10 }} onPress={() => navigation.navigate('SignUp')}><Text style={gStyle.Texts.normal_ts}>Зарегистрироваться</Text></TouchableOpacity>
+                        </View>
+                    </View>
+                    <InformationAbout type='delete' />
+                    <InformationAbout type='display' />
+                </>
             </TouchableOpacity>
         </KeyboardAvoidingView >
     );

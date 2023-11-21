@@ -131,9 +131,9 @@ const deleteAllUsers = () => {
         });
     });
 };
-export const InformationAbout = ({ type }) => {
+export const InformationAbout = ({ actionType }) => {
     const handlePress = () => {
-        if (type === 'del') {
+        if (actionType === 'delete') {
             deleteAllUsers()
                 .then(() => {
                     console.log('Пользователи удалены');
@@ -141,13 +141,13 @@ export const InformationAbout = ({ type }) => {
                 .catch(error => {
                     console.log('Ошибка удаления пользователей:', error);
                 });
-        } else if (type === 'display') {
+        } else if (actionType === 'display') {
             getAllUsers();
         }
     };
 
-    const infColor = type === 'del' ? 'red' : 'blue';
-    const positionStyle = type === 'del' ? { left: 50, bottom: 50 } : { right: 50, bottom: 50 };
+    const infColor = actionType === 'delete' ? 'red' : 'blue';
+    const positionStyle = actionType === 'delete' ? { left: 50, bottom: 50 } : { right: 50, bottom: 50 };
 
     return (
         <TouchableOpacity
