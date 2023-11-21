@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Keyboard, Text, KeyboardAvoidingView, View, TouchableOpacity, ScrollView } from 'react-native';
 import * as gStyle from '../../assets/Styles/globalStyle';
 import { Inputs, Button_continue } from '../../assets/Styles/Consts';
-import { initializeDatabase, loginUser, InformationAbout } from './DataBase';
+import { initializeDatabase, loginUser, InformationAbout } from './usersDB';
 
 
 export default function SignUp({ navigation }) {
@@ -68,8 +68,8 @@ export default function SignUp({ navigation }) {
                             </View>
                         </View>
                     </ScrollView>
-                    <InformationAbout />
-                </>
+                    <InformationAbout type={del} />
+                    <InformationAbout type={display} />                </>
             </TouchableOpacity>
         </KeyboardAvoidingView >
     );

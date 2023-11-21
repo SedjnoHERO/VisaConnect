@@ -65,7 +65,7 @@ export const Welcomes_location = StyleSheet.create({
         justifyContent: 'flex-end',
         alignContent: 'center',
         alignItems: 'center',
-        bottom: 40,
+        bottom: 80,
 
     }
 })
@@ -99,7 +99,7 @@ export const Inputs = StyleSheet.create({
         width: 390,
         height: 60,
         borderRadius: 12,
-        borderWidth: 0.4,
+        borderWidth: 0.8,
         borderColor: TextColors.black,
         alignItems: 'center',
         justifyContent: 'center',
@@ -111,7 +111,7 @@ export const Inputs = StyleSheet.create({
         fontSize: 20,
         textAlign: 'left',
         paddingLeft: 20,
-        color: TextColors.black
+        color: TextColors.black,
 
     },
     textBefore: {

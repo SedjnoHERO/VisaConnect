@@ -6,12 +6,10 @@ const db = SQlite.openDatabase('users.db');
 export const initializeDatabase = () => {
     db.transaction(tx => {
         tx.executeSql(
-            'CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, password TEXT)'
+            'CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, password TEXT, passport TEXT, date TEXT, address TEXT, firstName TEXT, surname TEXT, fatherName TEXT, documentPath TEXT)'
         );
     });
 };
-
-//доп параметры для бд (паспорт и т д) + указывать потом в настройках
 
 export const checkExistingEmail = async (email) => {
     return new Promise((resolve, reject) => {
@@ -25,20 +23,17 @@ export const checkExistingEmail = async (email) => {
                         console.log('Такая почта уже зарегистрирована');
                         resolve(true);
                     } else {
-                        console.log('Почта доступна для регистрации');
                         resolve(false);
                     }
                 },
                 (_, error) => {
-                    console.error('Ошибка SQL:', error);
+                    console.log('Ошибка SQL:', error);
                     reject(error);
                 }
             );
         });
     });
 };
-
-
 
 export const registerUser = async (username, password) => {
     try {
@@ -59,7 +54,7 @@ export const registerUser = async (username, password) => {
                         }
                     },
                     (_, error) => {
-                        console.error('Ошибка SQL:', error);
+                        console.log('Ошибка SQL:', error);
                         reject(error);
                     }
                 );
@@ -69,8 +64,6 @@ export const registerUser = async (username, password) => {
         throw error;
     }
 };
-
-
 
 export const loginUser = async (username, password) => {
     return new Promise((resolve, reject) => {
@@ -87,7 +80,7 @@ export const loginUser = async (username, password) => {
                     }
                 },
                 (_, error) => {
-                    console.error('Ошибка SQL:', error);
+                    console.log('Ошибка SQL:', error);
                     reject(error);
                 }
             );
@@ -121,21 +114,52 @@ const getAllUsers = () => {
         });
     })
 };
+const deleteAllUsers = () => {
+    return new Promise((resolve, reject) => {
+        db.transaction(tx => {
+            tx.executeSql(
+                'DELETE FROM users',
+                [],
+                (_, results) => {
+                    resolve(results);
+                },
+                (_, error) => {
+                    reject(error);
+                    return false;
+                }
+            );
+        });
+    });
+};
+export const InformationAbout = ({ type }) => {
+    const handlePress = () => {
+        if (type === 'del') {
+            deleteAllUsers()
+                .then(() => {
+                    console.log('Пользователи удалены');
+                })
+                .catch(error => {
+                    console.log('Ошибка удаления пользователей:', error);
+                });
+        } else if (type === 'display') {
+            getAllUsers();
+        }
+    };
 
-export const InformationAbout = ({ }) => {
+    const infColor = type === 'del' ? 'red' : 'blue';
+    const positionStyle = type === 'del' ? { left: 50, bottom: 50 } : { right: 50, bottom: 50 };
+
     return (
         <TouchableOpacity
             style={{
                 width: 50,
                 height: 50,
                 position: 'absolute',
-                right: 50,
-                bottom: 50,
                 borderRadius: 100,
-                backgroundColor: 'red'
+                backgroundColor: infColor,
+                ...positionStyle
             }}
-            onPress={() => getAllUsers()}
+            onPress={handlePress}
         />
-    )
-}
-
+    );
+};

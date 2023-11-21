@@ -44,12 +44,15 @@ export const Inputs = ({ TextPlaceHolder, secure, valueInfo, ChangeText }) => {
         <TextInput
             style={[gStyle.Inputs.Input, gStyle.Inputs.PlaceHolder]}
             placeholder={TextPlaceHolder}
-            placeholderTextColor='rgba(36, 36, 36, 0.4)'
+            placeholderTextColor='rgba(36, 36, 36, 0.6)'
             value={valueInfo}
             secureTextEntry={secure || secureDefault}
             editable={true}
             onChangeText={ChangeText}
             autoCorrect={false}
+
+            textContentType='none'
         />
     );
 }
+
