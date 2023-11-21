@@ -5,6 +5,7 @@ import Step2 from "../screens/WelcomeScreens/Step2";
 import Step3 from "../screens/WelcomeScreens/Step3";
 import Login from "../screens/Auth/LoginScreen";
 import SignUp from '../screens/Auth/SignUp';
+import specificInfo from '../screens/Components/info/specificInfo';
 import React, { useEffect, useState } from "react";
 
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -35,6 +36,7 @@ function App() {
                 <Stack.Screen name="Chat" component={Chat} options={{ headerShown: false }} />
                 <Stack.Screen name="Info" component={Info} options={{ headerShown: false }} />
                 <Stack.Screen name="News" component={News} options={{ headerShown: false }} />
+                <Stack.Screen name="specificInfo" component={specificInfo} options={{ headerShown: false }} />
             </Stack.Navigator>
         </NavigationContainer>
     );
