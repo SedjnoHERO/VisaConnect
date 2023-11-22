@@ -17,6 +17,7 @@ export default function Info({ navigation }) {
                 onPress={() => navigation.navigate('specificInfo', { visaInfo: item })}
                 style={gStyle.InfoCellsStyle.cells}
             >
+                //добавить иконку зависяющую от путя в infoAboutVisas
                 <Text style={gStyle.InfoCellsStyle.headline}>{item.title}</Text>
                 <Text style={gStyle.Texts.article_ts}>{item.descriptions.description1}</Text>
             </TouchableOpacity>
