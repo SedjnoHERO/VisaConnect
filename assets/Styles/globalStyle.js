@@ -50,7 +50,8 @@ export const Texts = StyleSheet.create({
     normal_ts: {
         fontFamily: 'med',
         fontSize: 18,
-        color: TextColors.black
+        color: TextColors.black,
+        lineHeight: 20,
     },
     article_ts: {
         fontFamily: 'light',
@@ -105,8 +106,12 @@ export const gPage = StyleSheet.create({
     title: {
         ...Texts.title,
         textAlign: 'center',
-        marginBottom: 40,
+        marginBottom: 30,
         marginTop: 20
+    },
+    for_title: {
+        height: '100%',
+        justifyContent: 'flex-end'
     }
 })
 
@@ -161,7 +166,7 @@ export const BottomTabStyle = StyleSheet.create({
     },
 })
 
-export const InfoCellsStyle = StyleSheet.create({
+export const Info = StyleSheet.create({
     cells: {
         backgroundColor: Colors.third_accent_color,
         width: 175,
@@ -179,5 +184,19 @@ export const InfoCellsStyle = StyleSheet.create({
         ...Texts.normal_ts,
         marginBottom: 10,
         marginTop: 10,
-    }
+    },
+    title: {
+        width: '100%',
+        height: 110,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        paddingHorizontal: 20,
+        paddingVertical: 20,
+        gap: 75
+    },
+})
+
+export const News = StyleSheet.create({
+
 })

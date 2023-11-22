@@ -1,5 +1,8 @@
-import { TouchableHighlight, Text, TouchableOpacity, TextInput, View } from "react-native";
+import { TouchableHighlight, Text, TouchableOpacity, TextInput, View, SafeAreaView } from "react-native";
 import * as gStyle from "./globalStyle";
+import { useNavigation } from "@react-navigation/native";
+import { MaterialIcons } from "@expo/vector-icons";
+
 
 export const Button_continue = ({ onPress, title, ButtonStyle, TextStyle, underlayColor, disabled }) => {
     const defaultUnderlayColor = '#19274A';
@@ -74,8 +77,17 @@ export const CustomIcon = ({ focused, iconName, FolderName }) => {
     );
 };
 
-export const InfoCells = ({ }) => {
+
+
+export const Title = ({ text }) => {
+    const navigation = useNavigation();
+    const goBack = () => {
+        navigation.goBack();
+    };
     return (
-        <Text>Hi</Text>
-    );
+        <View style={gStyle.Info.title}>
+            <TouchableOpacity style={gStyle.gPage.for_title} onPress={goBack}><MaterialIcons name='keyboard-backspace' size={24} color={gStyle.TextColors.black} /></TouchableOpacity>
+            <View style={gStyle.gPage.for_title}><Text style={{ ...gStyle.gPage.title, marginBottom: 0 }}>{text}</Text></View>
+        </View>
+    )
 }

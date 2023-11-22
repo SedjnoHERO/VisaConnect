@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { View, TouchableOpacity, Text, SafeAreaView, StyleSheet } from 'react-native';
+import { View, Text, SafeAreaView, TouchableOpacity } from 'react-native';
 import visaData from './infoAboutVisas.json';
 import * as gStyle from '../../../assets/Styles/globalStyle';
+import { Svg, Path } from 'react-native-svg';
+
 
 export default function Info({ navigation }) {
     const [data, setData] = useState([]);
@@ -15,11 +17,14 @@ export default function Info({ navigation }) {
             <TouchableOpacity
                 key={index}
                 onPress={() => navigation.navigate('specificInfo', { visaInfo: item })}
-                style={gStyle.InfoCellsStyle.cells}
+                style={gStyle.Info.cells}
+                underlayColor={gStyle.Colors.secondary_accent_color}
             >
-                //добавить иконку зависяющую от путя в infoAboutVisas
-                <Text style={gStyle.InfoCellsStyle.headline}>{item.title}</Text>
-                <Text style={gStyle.Texts.article_ts}>{item.descriptions.description1}</Text>
+                <Svg height={39} width={39}>
+                    <Path d={item.icon} fill={gStyle.TextColors.black} />
+                </Svg>
+                <Text style={gStyle.Info.headline}>{item.title}</Text>
+                <Text style={gStyle.Texts.article_ts}>{item.desc.desc1}</Text>
             </TouchableOpacity>
         ));
     };
@@ -30,7 +35,7 @@ export default function Info({ navigation }) {
     return (
         <SafeAreaView style={gStyle.gPage.page}>
             <Text style={gStyle.gPage.title}>Информация о визах</Text>
-            <View style={gStyle.InfoCellsStyle.grid}>
+            <View style={gStyle.Info.grid}>
                 <View>
                     {renderColumnItems(column1)}
                 </View>
