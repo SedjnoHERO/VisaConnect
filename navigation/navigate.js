@@ -18,6 +18,7 @@ import Profile from '../screens/Components/profile';
 import News from '../screens/Components/news/globalNews';
 import { Keyboard } from "react-native";
 import { CustomIcon } from "../assets/Styles/Consts";
+import CardFormes from '../screens/Components/cards/CardFormes'
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -37,6 +38,7 @@ function App() {
                 <Stack.Screen name="Info" component={Info} options={{ headerShown: false }} />
                 <Stack.Screen name="News" component={News} options={{ headerShown: false }} />
                 <Stack.Screen name="specificInfo" component={specificInfo} options={{ headerShown: false }} />
+                <Stack.Screen name="CardFormes" component={CardFormes} options={{ headerShown: false }} />
             </Stack.Navigator>
         </NavigationContainer>
     );

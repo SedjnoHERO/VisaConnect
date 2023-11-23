@@ -19,12 +19,18 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/Images/AppIcon.png",
+        "foregroundImage": "./assets/Images/splash.png",
         "backgroundColor": "#F8FBFF"
-      }
+      },
+      "package": "com.sedjnohero.VisaConnect"
     },
     "web": {
       "favicon": "./assets/Images/AppIcon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "9910fe03-19b9-4ac8-aea6-4dbf58526e4a"
+      }
     }
   }
 }

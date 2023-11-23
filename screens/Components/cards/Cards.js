@@ -1,12 +1,14 @@
 import react from "react";
-import { Text, View } from "react-native";
-import { Button_continue } from "../../../assets/Styles/Consts";
+import { TouchableOpacity, View } from "react-native";
+import * as gStyle from '../../../assets/Styles/globalStyle';
+import { Ionicons } from "@expo/vector-icons";
 
 export default function Cards({ navigation }) {
     return (
-        <View style={{ left: 20, top: 200 }}>
-            <Text>Hi</Text>
-            <View><Button_continue onPress={() => { navigation.navigate('SignUp') }} /></View>
+        <View style={gStyle.gPage.page}>
+            <TouchableOpacity onPress={() => { navigation.navigate('CardFormes') }} >
+                <Ionicons name="add-circle-outline" />
+            </TouchableOpacity>
         </View>
     );
 }
