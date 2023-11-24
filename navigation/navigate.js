@@ -63,7 +63,7 @@ function TabNavigator() {
     }, []);
 
     return (
-        <Tab.Navigator initialRouteName='Cards' screenOptions={{ tabBarStyle: { ...gStyle.BottomTabStyle.navigator, marginHorizontal: 10 }, tabBarShowLabel: false, tabBarVisible: isTabBarVisible }}>
+        <Tab.Navigator initialRouteName='Cards' screenOptions={{ tabBarStyle: { ...gStyle.BottomTabStyle.navigator }, tabBarShowLabel: false, tabBarVisible: isTabBarVisible }}>
             <Tab.Screen
                 name='News'
                 component={News}

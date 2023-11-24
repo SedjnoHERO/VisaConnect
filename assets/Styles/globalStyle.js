@@ -103,16 +103,28 @@ export const gPage = StyleSheet.create({
         backgroundColor: Colors.main_color,
         flex: 1,
     },
-    title: {
+    container: {
+        height: '100%',
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        flex: 1,
+    },
+    headline: {
         ...Texts.title,
         textAlign: 'center',
         marginBottom: 30,
         marginTop: 20
     },
-    for_title: {
-        height: '100%',
-        justifyContent: 'flex-end'
-    }
+    title: {
+        width: '100%',
+        height: 110,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        paddingHorizontal: 20,
+        paddingVertical: 20,
+
+    },
 })
 
 export const Inputs = StyleSheet.create({
@@ -147,6 +159,7 @@ export const BottomTabStyle = StyleSheet.create({
         marginBottom: 20,
         marginLeft: 20,
         marginRight: 20,
+        gap: 15,
         height: 94,
         backgroundColor: Colors.third_accent_color,
         borderRadius: 32,
@@ -154,6 +167,7 @@ export const BottomTabStyle = StyleSheet.create({
         borderTopWidth: 0,
         flex: 1,
         zIndex: 3,
+        paddingLeft: 15,
         paddingTop: 32,
         paddingBottom: 32,
     },
@@ -185,18 +199,12 @@ export const Info = StyleSheet.create({
         marginBottom: 10,
         marginTop: 10,
     },
-    title: {
-        width: '100%',
-        height: 110,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-        paddingHorizontal: 20,
-        paddingVertical: 20,
-        gap: 75
-    },
 })
 
 export const News = StyleSheet.create({
+
+})
+
+export const Cards = StyleSheet.create({
 
 })

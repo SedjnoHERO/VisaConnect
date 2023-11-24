@@ -1,14 +1,15 @@
 import react from "react";
-import { TouchableOpacity, View } from "react-native";
+import { SafeAreaView, TouchableOpacity, View, Text } from "react-native";
 import * as gStyle from '../../../assets/Styles/globalStyle';
-import { Ionicons } from "@expo/vector-icons";
+import { PlusSquare } from 'phosphor-react-native';
 
 export default function Cards({ navigation }) {
     return (
-        <View style={gStyle.gPage.page}>
+        <SafeAreaView style={{ ...gStyle.gPage.page, alignItems: 'center' }}>
+            <Text style={gStyle.gPage.headline}>Новости</Text>
             <TouchableOpacity onPress={() => { navigation.navigate('CardFormes') }} >
-                <Ionicons name="add-circle-outline" />
+                <PlusSquare size={200} color={gStyle.TextColors.black} weight='thin' />
             </TouchableOpacity>
-        </View>
+        </SafeAreaView>
     );
 }

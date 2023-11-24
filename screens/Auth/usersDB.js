@@ -6,7 +6,7 @@ const db = SQlite.openDatabase('users.db');
 export const initializeDatabase = () => {
     db.transaction(tx => {
         tx.executeSql(
-            'CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, password TEXT, passport TEXT, date TEXT, address TEXT, firstName TEXT, surname TEXT, fatherName TEXT, documentPath TEXT)'
+            'CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, password TEXT, passport TEXT, date TEXT, firstName TEXT, surname TEXT, fatherName TEXT, documentPath TEXT)'
         );
     });
 };

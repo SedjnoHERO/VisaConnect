@@ -34,7 +34,7 @@ export default function Info({ navigation }) {
 
     return (
         <SafeAreaView style={gStyle.gPage.page}>
-            <Text style={gStyle.gPage.title}>Информация о визах</Text>
+            <Text style={gStyle.gPage.headline}>Информация о визах</Text>
             <View style={gStyle.Info.grid}>
                 <View>
                     {renderColumnItems(column1)}

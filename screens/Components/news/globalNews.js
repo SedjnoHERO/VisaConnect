@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, SafeAreaView } from 'react-native';
+import * as gStyle from '../../../assets/Styles/globalStyle';
+import { Title } from '../../../assets/Styles/Consts';
 
 export default function News({ navigation, isAdmin }) {
     const [news, setNews] = useState([]);
@@ -34,8 +36,8 @@ export default function News({ navigation, isAdmin }) {
     };
 
     return (
-        <View>
-            <Text>Global News</Text>
+        <SafeAreaView style={gStyle.gPage.page}>
+            <Text style={gStyle.gPage.headline}>Новости</Text>
             <FlatList
                 data={news}
                 renderItem={renderNewsItem}
@@ -46,7 +48,7 @@ export default function News({ navigation, isAdmin }) {
                     <Text>Создать новость</Text>
                 </TouchableOpacity>
             )}
-        </View>
+        </SafeAreaView>
     );
 };
 
