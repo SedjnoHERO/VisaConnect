@@ -1,4 +1,5 @@
-import { StyleSheet } from "react-native";
+import { Component } from "react";
+import { StyleSheet, TextComponent } from "react-native";
 
 export const Colors = StyleSheet.create({
     main_color: '#F8FBFF',
@@ -10,6 +11,8 @@ export const Colors = StyleSheet.create({
 export const TextColors = StyleSheet.create({
     black: '#242424',
     white: '#ffffff',
+    disabled: '#d3d3d3',
+    enabled: '#797979'
 })
 
 export const ButtonStyles = StyleSheet.create({
@@ -206,5 +209,109 @@ export const News = StyleSheet.create({
 })
 
 export const Cards = StyleSheet.create({
+    form: {
+        width: '100%',
+        flexDirection: 'column',
+        gap: 10,
+    },
+    special_ts: {
+        ...TextColors.black,
+        paddingHorizontal: '5%',
+        width: '100%',
+        fontFamily: 'reg',
+        fontSize: 16
+    },
+    container: {
+        fontSize: 16,
+        color: TextColors.black,
+        fontFamily: 'reg',
+        width: '90%'
+    },
+    input: {
+        borderRadius: 12,
+        borderColor: TextColors.disabled,
+        borderWidth: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingHorizontal: '5%',
+        height: 45,
+        alignItems: 'center'
+    },
+    input_focused: {
+        borderRadius: 12,
+        borderColor: TextColors.enabled,
+        borderWidth: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingHorizontal: '5%',
+        height: 45,
+        alignItems: 'center',
+    },
+    drop: {
+        width: '80%',
+        borderRadius: 12,
+        borderColor: TextColors.disabled,
+        borderWidth: 1,
+        padding: 10,
+        flexDirection: 'column',
+        gap: 3
+    },
+    drop_component: {
+        width: '100%',
+        justifyContent: 'center',
+        height: 30,
+        paddingHorizontal: '3%',
 
+    },
+    drop_component_focused: {
+        width: '100%',
+        justifyContent: 'center',
+        height: 30,
+        borderRadius: 8,
+        backgroundColor: TextColors.disabled,
+        paddingHorizontal: '3%',
+
+    },
+    disabled: {
+
+    },
+    input_limited: {
+        borderRadius: 12,
+        borderColor: '#d3d3d3',
+        borderWidth: 1,
+        flexDirection: 'column',
+        paddingLeft: '5%',
+        paddingTop: 5,
+        height: 'auto',
+        alignItems: 'center'
+    },
+    limited_container: {
+        paddingVertical: 10,
+        paddingRight: '5%',
+        width: '100%'
+    },
+    limited_down_container: {
+        width: '100%',
+        flexDirection: 'row-reverse',
+        gap: 10
+    },
+    limited_icon_container: {
+        paddingTop: 4,
+        paddingLeft: 2,
+        paddingRight: 8,
+        paddingBottom: 5,
+        alignItems: 'center',
+        alignSelf: 'stretch',
+    },
+    limited_icon: {
+        width: 9,
+        height: 9,
+        borderBottomRightRadius: 8,
+        borderColor: TextColors.disabled,
+        borderBottomWidth: 2,
+        borderRightWidth: 2,
+    },
+    input_drop: {
+
+    }
 })
