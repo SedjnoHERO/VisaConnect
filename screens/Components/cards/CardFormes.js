@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Keyboard, KeyboardAvoidingView, ScrollView } from "react-native";
+import { View, TouchableOpacity, Keyboard, KeyboardAvoidingView, ScrollView } from "react-native";
 import * as gStyle from '../../../assets/Styles/globalStyle';
 import { InputLimited, Title, DropInput, DefInput } from "../../../assets/Styles/Consts"
 
@@ -16,9 +16,9 @@ export default function CardFormes({ navigation }) {
                             {/* firstSide */}
                             <View style={{ flexDirection: 'column', flex: 1, rowGap: '20%', paddingHorizontal: '3%' }}>
                                 {/* visaType */}
-                                <DropInput headline='Выберите тип визы' />
+                                <DropInput headline='Выберите тип визы' dropType='visaType' />
                                 {/* visaCountry */}
-                                <DropInput headline='Выберите страну для визы' />
+                                <DropInput headline='Выберите страну для визы' dropType='visaCountry' />
                                 {/* visaNote */}
                                 <InputLimited length={100} headline='Опишите цель поездки' />
                             </View>

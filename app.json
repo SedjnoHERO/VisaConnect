@@ -15,14 +15,18 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "UIFileSharingEnabled": true
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/Images/splash.png",
         "backgroundColor": "#F8FBFF"
       },
-      "package": "com.sedjnohero.VisaConnect"
+      "package": "com.sedjnohero.VisaConnect",
+      "versionCode": 1
     },
     "web": {
       "favicon": "./assets/Images/AppIcon.png"

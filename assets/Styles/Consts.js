@@ -4,6 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useState } from "react";
 import { CaretUpDown } from 'phosphor-react-native';
+import { Drop } from '../../screens/Components/cards/cardsDB'
 
 
 export const Button_continue = ({ onPress, title, ButtonStyle, TextStyle, underlayColor, disabled }) => {
@@ -87,7 +88,7 @@ export const Title = ({ text }) => {
     )
 }
 
-export const DropInput = ({ headline }) => {
+export const DropInput = ({ headline, dropType }) => {
     const [inputText, setInputText] = useState('');
     const [isFocused, setIsFocused] = useState(false);
     const handleFocus = () => {
@@ -114,25 +115,11 @@ export const DropInput = ({ headline }) => {
                     <CaretUpDown size={24} color={isFocused ? gStyle.TextColors.enabled : gStyle.TextColors.disabled} />
                 </View>
             </View>
-            {isFocused && <Drop />}
+            {isFocused && <Drop dropType={dropType} />}
         </View>
     )
 }
 
-// связать с БД, оформить в БД, сделать уникальными для county и type
-export const Drop = ({ }) => {
-    return (
-        <View style={gStyle.Cards.drop}>
-            <View style={gStyle.Cards.drop_component}><Text style={{ ...gStyle.Texts.article_ts, fontFamily: 'reg' }}>Туристическая</Text></View>
-            <View style={gStyle.Cards.drop_component}><Text style={{ ...gStyle.Texts.article_ts, fontFamily: 'reg' }}>Гостевая</Text></View>
-            <View style={gStyle.Cards.drop_component}><Text style={{ ...gStyle.Texts.article_ts, fontFamily: 'reg' }}>Бизнес-виза</Text></View>
-            <View style={gStyle.Cards.drop_component_focused}><Text style={{ ...gStyle.Texts.article_ts, fontFamily: 'reg' }}>Рабочая</Text></View>
-            <View style={gStyle.Cards.drop_component}><Text style={{ ...gStyle.Texts.article_ts, fontFamily: 'reg' }}>Студенческая</Text></View>
-            <View style={gStyle.Cards.drop_component}><Text style={{ ...gStyle.Texts.article_ts, fontFamily: 'reg' }}>На постоянное место жительства</Text></View>
-        </View>
-    )
-
-}
 
 export const InputLimited = ({ length, headline }) => {
     const [inputText, setInputText] = useState('');

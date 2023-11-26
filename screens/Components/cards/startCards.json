@@ -1,0 +1,218 @@
+[
+    {
+        "id": 1,
+        "visaCountry": "Америка",
+        "visaType": "Туристическая",
+        "cost": "171"
+    },
+    {
+        "id": 2,
+        "visaCountry": "Америка",
+        "visaType": "Гостевая",
+        "cost": "348"
+    },
+    {
+        "id": 3,
+        "visaCountry": "Америка",
+        "visaType": "Бизнес-виза",
+        "cost": "253"
+    },
+    {
+        "id": 4,
+        "visaCountry": "Америка",
+        "visaType": "Рабочая",
+        "cost": "287"
+    },
+    {
+        "id": 5,
+        "visaCountry": "Америка",
+        "visaType": "Студенческая",
+        "cost": "327"
+    },
+    {
+        "id": 6,
+        "visaCountry": "Америка",
+        "visaType": "На постоянное место жительства",
+        "cost": "347"
+    },
+    {
+        "id": 7,
+        "visaCountry": "Польша",
+        "visaType": "Туристическая",
+        "cost": "350"
+    },
+    {
+        "id": 8,
+        "visaCountry": "Польша",
+        "visaType": "Гостевая",
+        "cost": "256"
+    },
+    {
+        "id": 9,
+        "visaCountry": "Польша",
+        "visaType": "Бизнес-виза",
+        "cost": "468"
+    },
+    {
+        "id": 10,
+        "visaCountry": "Польша",
+        "visaType": "Рабочая",
+        "cost": "342"
+    },
+    {
+        "id": 11,
+        "visaCountry": "Польша",
+        "visaType": "Студенческая",
+        "cost": "142"
+    },
+    {
+        "id": 12,
+        "visaCountry": "Польша",
+        "visaType": "На постоянное место жительства",
+        "cost": "301"
+    },
+    {
+        "id": 13,
+        "visaCountry": "Франция",
+        "visaType": "Туристическая",
+        "cost": "442"
+    },
+    {
+        "id": 14,
+        "visaCountry": "Франция",
+        "visaType": "Гостевая",
+        "cost": "241"
+    },
+    {
+        "id": 15,
+        "visaCountry": "Франция",
+        "visaType": "Бизнес-виза",
+        "cost": "523"
+    },
+    {
+        "id": 16,
+        "visaCountry": "Франция",
+        "visaType": "Рабочая",
+        "cost": "124"
+    },
+    {
+        "id": 17,
+        "visaCountry": "Франция",
+        "visaType": "Студенческая",
+        "cost": "432"
+    },
+    {
+        "id": 18,
+        "visaCountry": "Франция",
+        "visaType": "На постоянное место жительства",
+        "cost": "432"
+    },
+    {
+        "id": 19,
+        "visaCountry": "Италия",
+        "visaType": "Туристическая",
+        "cost": "241"
+    },
+    {
+        "id": 20,
+        "visaCountry": "Италия",
+        "visaType": "Гостевая",
+        "cost": "312"
+    },
+    {
+        "id": 21,
+        "visaCountry": "Италия",
+        "visaType": "Бизнес-виза",
+        "cost": "242"
+    },
+    {
+        "id": 22,
+        "visaCountry": "Италия",
+        "visaType": "Рабочая",
+        "cost": "323"
+    },
+    {
+        "id": 23,
+        "visaCountry": "Италия",
+        "visaType": "Студенческая",
+        "cost": "231"
+    },
+    {
+        "id": 24,
+        "visaCountry": "Италия",
+        "visaType": "На постоянное место жительства",
+        "cost": "496"
+    },
+    {
+        "id": 25,
+        "visaCountry": "Испания",
+        "visaType": "Туристическая",
+        "cost": "395"
+    },
+    {
+        "id": 26,
+        "visaCountry": "Испания",
+        "visaType": "Гостевая",
+        "cost": "364"
+    },
+    {
+        "id": 27,
+        "visaCountry": "Испания",
+        "visaType": "Бизнес-виза",
+        "cost": "485"
+    },
+    {
+        "id": 28,
+        "visaCountry": "Испания",
+        "visaType": "Рабочая",
+        "cost": "234"
+    },
+    {
+        "id": 29,
+        "visaCountry": "Испания",
+        "visaType": "Студенческая",
+        "cost": "204"
+    },
+    {
+        "id": 30,
+        "visaCountry": "Испания",
+        "visaType": "На постоянное место жительства",
+        "cost": "117"
+    },
+    {
+        "id": 31,
+        "visaCountry": "Германия",
+        "visaType": "Туристическая",
+        "cost": "342"
+    },
+    {
+        "id": 32,
+        "visaCountry": "Германия",
+        "visaType": "Гостевая",
+        "cost": "421"
+    },
+    {
+        "id": 33,
+        "visaCountry": "Германия",
+        "visaType": "Бизнес-виза",
+        "cost": "274"
+    },
+    {
+        "id": 34,
+        "visaCountry": "Германия",
+        "visaType": "Рабочая",
+        "cost": "132"
+    },
+    {
+        "id": 35,
+        "visaCountry": "Германия",
+        "visaType": "Студенческая",
+        "cost": "392"
+    },
+    {
+        "id": 36,
+        "visaCountry": "Германия",
+        "visaType": "На постоянное место жительства",
+        "cost": "189"
+    }
+]
