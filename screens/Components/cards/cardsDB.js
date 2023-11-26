@@ -49,7 +49,7 @@ export const fetchDataFromDB = () => {
 // связать с БД, оформить в БД, сделать уникальными для county и type
 export const Drop = ({ dropType }) => {
     const [visaData, setVisaData] = useState([]);
-
+    //сделать логику на запоминание выбранных id и cost => есть в ТГ
     useEffect(() => {
         if (dropType === 'visaType') {
             db.transaction((tx) => {
@@ -82,7 +82,7 @@ export const Drop = ({ dropType }) => {
         }
     }, [dropType, db]);
 
-
+    //сделать отображения выделенного компонента
     return (
         <View style={gStyle.Cards.drop}>
             {visaData.map((item, index) => (
