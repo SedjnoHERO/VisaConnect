@@ -1,8 +1,11 @@
 import { View, TouchableOpacity, Keyboard, KeyboardAvoidingView, ScrollView } from "react-native";
 import * as gStyle from '../../../assets/Styles/globalStyle';
 import { InputLimited, Title, DropInput, DefInput } from "../../../assets/Styles/Consts"
+import { useState } from "react";
+
 
 export default function CardFormes({ navigation }) {
+    const [firstSideState, setFirstSideState] = useState(false);
     return (
         <KeyboardAvoidingView
             behavior='padding'
@@ -34,7 +37,6 @@ export default function CardFormes({ navigation }) {
                                 <DefInput headline='Введите отчество заявителя' text='Отчество' />
                             </View>
                         </View>
-
                     </View >
                 </ScrollView>
             </TouchableOpacity>

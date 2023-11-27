@@ -89,14 +89,15 @@ export const Title = ({ text }) => {
 }
 
 export const DropInput = ({ headline, dropType }) => {
-    const [inputText, setInputText] = useState('');
     const [isFocused, setIsFocused] = useState(false);
+    const [selectedItem, setSelectedItem] = useState(''); // Локальное состояние для хранения выбранного элемента
     const handleFocus = () => {
         setIsFocused(true);
     };
     const handleBlur = () => {
         setIsFocused(false);
     };
+
     return (
         <View style={{ ...gStyle.Cards.form, gap: 5, alignItems: 'flex-end' }}>
             <View style={gStyle.Cards.form}>
@@ -106,16 +107,16 @@ export const DropInput = ({ headline, dropType }) => {
                         style={gStyle.Cards.container}
                         placeholder={'Выбрать'}
                         placeholderTextColor={gStyle.TextColors.disabled}
-                        value={inputText}
+                        value={selectedItem}
                         onFocus={handleFocus}
                         onBlur={handleBlur}
-                        onChangeText={setInputText}
+                        onChangeText={setSelectedItem}
                         maxLength={30}
                     />
                     <CaretUpDown size={24} color={isFocused ? gStyle.TextColors.enabled : gStyle.TextColors.disabled} />
                 </View>
             </View>
-            {isFocused && <Drop dropType={dropType} />}
+            {isFocused && <Drop dropType={dropType} setSelectedItem={setSelectedItem} />}
         </View>
     )
 }
@@ -124,12 +125,17 @@ export const DropInput = ({ headline, dropType }) => {
 export const InputLimited = ({ length, headline }) => {
     const [inputText, setInputText] = useState('');
     const [isFocused, setIsFocused] = useState(false);
+    const [currentLength, setCurrentLength] = useState(0);
     const handleFocus = () => {
         setIsFocused(true);
     };
     const handleBlur = () => {
         setIsFocused(false);
     };
+    const handleTextChange = (text) => {
+        setInputText(text); // Устанавливаем введенный текст
+        setCurrentLength(text.length); // Устанавливаем текущую длину введенного текста
+    }
     return (
         <View style={gStyle.Cards.form}>
             <Text style={gStyle.Cards.special_ts}>{headline}</Text>
@@ -142,7 +148,7 @@ export const InputLimited = ({ length, headline }) => {
                         value={inputText}
                         onFocus={handleFocus}
                         onBlur={handleBlur}
-                        onChangeText={setInputText}
+                        onChangeText={handleTextChange}
                         maxLength={length}
                         multiline={true}
                     />
@@ -151,7 +157,7 @@ export const InputLimited = ({ length, headline }) => {
                     <View style={gStyle.Cards.limited_icon_container}>
                         <View style={{ ...gStyle.Cards.limited_icon, borderColor: isFocused ? gStyle.TextColors.enabled : gStyle.TextColors.disabled }} />
                     </View>
-                    <Text style={{ fontFamily: 'reg', fontSize: 12, color: isFocused ? gStyle.TextColors.enabled : gStyle.TextColors.disabled }}>0/{length}</Text>
+                    <Text style={{ fontFamily: 'reg', fontSize: 12, color: isFocused ? gStyle.TextColors.enabled : gStyle.TextColors.disabled }}>{currentLength}/{length}</Text>
                 </View>
             </View>
         </View>

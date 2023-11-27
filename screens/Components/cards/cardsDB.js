@@ -1,7 +1,7 @@
 import * as SQLite from 'expo-sqlite';
 import { useState, useEffect } from 'react';
 import startCards from './startCards.json';
-import { TouchableOpacity, View, Text, ScrollView } from 'react-native';
+import { TouchableOpacity, View, Text } from 'react-native';
 import * as gStyle from "../../../assets/Styles/globalStyle";
 
 const db = SQLite.openDatabase('visa.db');
@@ -47,8 +47,13 @@ export const fetchDataFromDB = () => {
 
 
 // связать с БД, оформить в БД, сделать уникальными для county и type
-export const Drop = ({ dropType }) => {
+export const Drop = ({ dropType, setSelectedItem }) => {
     const [visaData, setVisaData] = useState([]);
+    const handlePress = (item) => {
+        setSelectedItem(item.visaCountry || item.visaType); // Обновление выбранного элемента
+    };
+
+
     //сделать логику на запоминание выбранных id и cost => есть в ТГ
     useEffect(() => {
         if (dropType === 'visaType') {
@@ -61,7 +66,7 @@ export const Drop = ({ dropType }) => {
                         setVisaData(data);
                     },
                     (error) => {
-                        console.error('Ошибка при получении данных:', error);
+                        console.log('Ошибка при получении данных:', error);
                     }
                 );
             });
@@ -75,7 +80,7 @@ export const Drop = ({ dropType }) => {
                         setVisaData(data);
                     },
                     (error) => {
-                        console.error('Ошибка при получении данных:', error);
+                        console.log('Ошибка при получении данных:', error);
                     }
                 );
             });
@@ -87,11 +92,11 @@ export const Drop = ({ dropType }) => {
         <View style={gStyle.Cards.drop}>
             {visaData.map((item, index) => (
                 <TouchableOpacity key={index} onPress={() => handlePress(item)}>
-                    {/* Отображение каждого элемента данных в отдельном TouchableOpacity */}
                     <View style={gStyle.Cards.drop_component}>
-                        <Text style={{ ...gStyle.Texts.article_ts, fontFamily: 'reg' }}>{item.visaCountry}{item.visaType}</Text>
+                        <Text style={{ ...gStyle.Texts.article_ts, fontFamily: 'reg' }}>
+                            {item.visaCountry || item.visaType}
+                        </Text>
                     </View>
-                    {/* и т.д., отображение других данных */}
                 </TouchableOpacity>
             ))}
         </View>

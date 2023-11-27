@@ -254,14 +254,14 @@ export const Cards = StyleSheet.create({
         borderWidth: 1,
         padding: 10,
         flexDirection: 'column',
-        gap: 3
+        gap: 3,
+        zIndex: 4,
     },
     drop_component: {
         width: '100%',
         justifyContent: 'center',
         height: 30,
         paddingHorizontal: '3%',
-
     },
     drop_component_focused: {
         width: '100%',
