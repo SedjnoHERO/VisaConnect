@@ -88,9 +88,12 @@ export const Title = ({ text }) => {
 
 export const DropInput = ({ headline, dropType, onChange }) => {
     const [isFocused, setIsFocused] = useState(false);
-    const [selectedItem, setSelectedItem] = useState(''); // Локальное состояние для хранения выбранного элемента
+    const [selectedItem, setSelectedItem] = useState('');
+    const [isDropVisible, setIsDropVisible] = useState(false); // Добавим состояние для управления видимостью Drop
+
     const handleFocus = () => {
         setIsFocused(true);
+        setIsDropVisible(true); // При фокусировке показываем Drop
     };
     const handleBlur = () => {
         setIsFocused(false);
@@ -98,6 +101,7 @@ export const DropInput = ({ headline, dropType, onChange }) => {
     const handleInputChange = (text) => {
         setSelectedItem(text);
         onChange(text);
+        setIsDropVisible(false);
     };
 
     return (
@@ -110,18 +114,27 @@ export const DropInput = ({ headline, dropType, onChange }) => {
                         placeholder={'Выбрать'}
                         placeholderTextColor={gStyle.TextColors.disabled}
                         value={selectedItem}
-                        onFocus={handleFocus}
-                        onBlur={handleBlur}
                         onChangeText={handleInputChange}
                         maxLength={30}
+                        onBlur={handleBlur}
+                        onFocus={handleFocus}
                     />
-                    <CaretUpDown size={24} color={isFocused ? gStyle.TextColors.enabled : gStyle.TextColors.disabled} />
+                    <CaretUpDown
+                        size={24}
+                        color={isFocused ? gStyle.TextColors.enabled : gStyle.TextColors.disabled}
+                    />
                 </View>
             </View>
-            {isFocused && <Drop dropType={dropType} setSelectedItem={setSelectedItem} />}
+            <Drop
+                dropType={dropType}
+                setSelectedItem={setSelectedItem}
+                isVisible={isDropVisible}
+                onSelectItem={handleInputChange} // Передача функции выбора элемента в Drop
+                selectedItem={selectedItem} // Передача выбранного элемента в Drop для выделения стилями
+            />
         </View>
-    )
-}
+    );
+};
 
 
 export const InputLimited = ({ length, headline }) => {

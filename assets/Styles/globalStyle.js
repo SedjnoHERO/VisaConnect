@@ -215,7 +215,7 @@ export const Cards = StyleSheet.create({
         gap: 10,
     },
     special_ts: {
-        ...TextColors.black,
+        color: TextColors.black,
         paddingHorizontal: '5%',
         width: '100%',
         fontFamily: 'reg',
@@ -248,7 +248,7 @@ export const Cards = StyleSheet.create({
         alignItems: 'center',
     },
     drop: {
-        width: '80%',
+        width: '90%',
         borderRadius: 12,
         borderColor: TextColors.disabled,
         borderWidth: 1,

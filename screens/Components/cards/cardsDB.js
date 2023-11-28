@@ -1,7 +1,7 @@
 import * as SQLite from 'expo-sqlite';
 import { useState, useEffect } from 'react';
 import startCards from './startCards.json';
-import { TouchableOpacity, View, Text } from 'react-native';
+import { TouchableOpacity, View, Text, Modal } from 'react-native';
 import * as gStyle from "../../../assets/Styles/globalStyle";
 
 const db = SQLite.openDatabase('visa.db');
@@ -47,14 +47,14 @@ export const fetchDataFromDB = () => {
 
 
 // связать с БД, оформить в БД, сделать уникальными для county и type
-export const Drop = ({ dropType, setSelectedItem }) => {
+export const Drop = ({ dropType, setSelectedItem, isVisible }) => {
     const [visaData, setVisaData] = useState([]);
+
     const handlePress = (item) => {
-        setSelectedItem(item.visaCountry || item.visaType); // Обновление выбранного элемента
+        setSelectedItem(item.visaCountry || item.visaType);
+        onSelectItem(item.visaCountry || item.visaType); // Вызов функции выбора элемента из DropInput
     };
 
-
-    //сделать логику на запоминание выбранных id и cost => есть в ТГ
     useEffect(() => {
         if (dropType === 'visaType') {
             db.transaction((tx) => {
@@ -86,20 +86,25 @@ export const Drop = ({ dropType, setSelectedItem }) => {
             });
         }
     }, [dropType, db]);
-
-    //сделать отображения выделенного компонента
     return (
-        <View style={gStyle.Cards.drop}>
-            {visaData.map((item, index) => (
-                <TouchableOpacity key={index} onPress={() => handlePress(item)}>
-                    <View style={gStyle.Cards.drop_component}>
-                        <Text style={{ ...gStyle.Texts.article_ts, fontFamily: 'reg' }}>
-                            {item.visaCountry || item.visaType}
-                        </Text>
-                    </View>
-                </TouchableOpacity>
-            ))}
-        </View>
+        isVisible && (
+            <View style={gStyle.Cards.drop}>
+                {visaData.map((item, index) => (
+                    <TouchableOpacity
+                        key={index}
+                        onPress={() => handlePress(item)}
+                    >
+                        <View
+                            style={[
+                                gStyle.Cards.drop_component,
+                                item.visaCountry || item.visaType === selectedItem ? gStyle.Cards.drop_component_focused : null,
+                            ]}
+                        >
+                            <Text>{item.visaCountry || item.visaType}</Text>
+                        </View>
+                    </TouchableOpacity>
+                ))}
+            </View>
+        )
     );
-
 };
