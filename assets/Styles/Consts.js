@@ -72,8 +72,6 @@ export const CustomIcon = ({ focused, iconName, FolderName }) => {
     );
 };
 
-
-
 export const Title = ({ text }) => {
     const navigation = useNavigation();
     const goBack = () => {
@@ -88,7 +86,7 @@ export const Title = ({ text }) => {
     )
 }
 
-export const DropInput = ({ headline, dropType }) => {
+export const DropInput = ({ headline, dropType, onChange }) => {
     const [isFocused, setIsFocused] = useState(false);
     const [selectedItem, setSelectedItem] = useState(''); // Локальное состояние для хранения выбранного элемента
     const handleFocus = () => {
@@ -96,6 +94,10 @@ export const DropInput = ({ headline, dropType }) => {
     };
     const handleBlur = () => {
         setIsFocused(false);
+    };
+    const handleInputChange = (text) => {
+        setSelectedItem(text);
+        onChange(text);
     };
 
     return (
@@ -110,7 +112,7 @@ export const DropInput = ({ headline, dropType }) => {
                         value={selectedItem}
                         onFocus={handleFocus}
                         onBlur={handleBlur}
-                        onChangeText={setSelectedItem}
+                        onChangeText={handleInputChange}
                         maxLength={30}
                     />
                     <CaretUpDown size={24} color={isFocused ? gStyle.TextColors.enabled : gStyle.TextColors.disabled} />
@@ -164,7 +166,7 @@ export const InputLimited = ({ length, headline }) => {
     )
 }
 
-export const DefInput = ({ headline, text }) => {
+export const DefInput = ({ headline, text, active }) => {
     const [focused, setFocused] = useState(false);
     const [inputText, setInputText] = useState('');
 
@@ -178,7 +180,7 @@ export const DefInput = ({ headline, text }) => {
 
     return (
         <View style={{ flexDirection: 'column', gap: 10 }}>
-            <Text style={[{ paddingHorizontal: '5%', fontFamily: 'reg', fontSize: 16, color: '#d3d3d3' }]}>{headline}</Text>
+            <Text style={[{ paddingHorizontal: '5%', fontFamily: 'reg', fontSize: 16, color: active ? gStyle.TextColors.black : gStyle.TextColors.disabled }]}>{headline}</Text>
             <View style={{ borderRadius: 12, borderColor: focused ? '#797979' : '#d3d3d3', borderWidth: 1, flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: '5%', height: 45, alignItems: 'center' }}>
                 <TextInput
                     style={{ flex: 1, fontSize: 16, color: '#d3d3d3', fontFamily: 'reg' }}
@@ -188,6 +190,7 @@ export const DefInput = ({ headline, text }) => {
                     onChangeText={setInputText}
                     onFocus={handleFocus}
                     onBlur={handleBlur}
+                    editable={active}
                 />
             </View>
         </View>

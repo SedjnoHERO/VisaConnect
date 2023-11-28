@@ -304,8 +304,8 @@ export const Cards = StyleSheet.create({
         alignSelf: 'stretch',
     },
     limited_icon: {
-        width: 9,
-        height: 9,
+        width: 8,
+        height: 8,
         borderBottomRightRadius: 8,
         borderColor: TextColors.disabled,
         borderBottomWidth: 2,
