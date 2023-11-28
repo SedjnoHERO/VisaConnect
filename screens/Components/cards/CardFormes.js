@@ -27,7 +27,6 @@ export default function CardFormes({ navigation }) {
                             <View style={{ flexDirection: 'column', flex: 1, rowGap: '20%', paddingHorizontal: '3%' }}>
                                 <DropInput headline='Выберите тип визы' dropType='visaType' onChange={(value) => handleInputChange([value])} />
                                 <DropInput headline='Выберите страну для визы' dropType='visaCountry' onChange={(value) => handleInputChange([value])} />
-
                                 {/* <DropInput headline='Выберите тип визы' dropType='visaType' onChange={handleInputChange} />
                                 <DropInput headline='Выберите страну для визы' dropType='visaCountry' onChange={handleInputChange} /> */}
                                 <InputLimited length={100} headline='Опишите цель поездки' />

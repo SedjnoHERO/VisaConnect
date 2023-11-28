@@ -89,11 +89,11 @@ export const Title = ({ text }) => {
 export const DropInput = ({ headline, dropType, onChange }) => {
     const [isFocused, setIsFocused] = useState(false);
     const [selectedItem, setSelectedItem] = useState('');
-    const [isDropVisible, setIsDropVisible] = useState(false); // Добавим состояние для управления видимостью Drop
+    const [isVisible, setIsVisible] = useState(false); // Добавим состояние для управления видимостью Drop
 
     const handleFocus = () => {
         setIsFocused(true);
-        setIsDropVisible(true); // При фокусировке показываем Drop
+        setIsVisible(true); // При фокусировке показываем Drop
     };
     const handleBlur = () => {
         setIsFocused(false);
@@ -101,7 +101,7 @@ export const DropInput = ({ headline, dropType, onChange }) => {
     const handleInputChange = (text) => {
         setSelectedItem(text);
         onChange(text);
-        setIsDropVisible(false);
+        setIsVisible(false);
     };
 
     return (
@@ -128,9 +128,10 @@ export const DropInput = ({ headline, dropType, onChange }) => {
             <Drop
                 dropType={dropType}
                 setSelectedItem={setSelectedItem}
-                isVisible={isDropVisible}
-                onSelectItem={handleInputChange} // Передача функции выбора элемента в Drop
-                selectedItem={selectedItem} // Передача выбранного элемента в Drop для выделения стилями
+                isVisible={isVisible}
+                selectedItem={selectedItem}
+                setIsVisible={setIsVisible}
+                onSelectItem={onChange}
             />
         </View>
     );
@@ -196,7 +197,7 @@ export const DefInput = ({ headline, text, active }) => {
             <Text style={[{ paddingHorizontal: '5%', fontFamily: 'reg', fontSize: 16, color: active ? gStyle.TextColors.black : gStyle.TextColors.disabled }]}>{headline}</Text>
             <View style={{ borderRadius: 12, borderColor: focused ? '#797979' : '#d3d3d3', borderWidth: 1, flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: '5%', height: 45, alignItems: 'center' }}>
                 <TextInput
-                    style={{ flex: 1, fontSize: 16, color: '#d3d3d3', fontFamily: 'reg' }}
+                    style={gStyle.Cards.container}
                     placeholder={text}
                     placeholderTextColor="#d3d3d3"
                     value={inputText}

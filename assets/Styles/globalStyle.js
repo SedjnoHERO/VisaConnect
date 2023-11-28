@@ -215,7 +215,7 @@ export const Cards = StyleSheet.create({
         gap: 10,
     },
     special_ts: {
-        color: TextColors.black,
+        ...TextColors.black,
         paddingHorizontal: '5%',
         width: '100%',
         fontFamily: 'reg',
@@ -248,7 +248,7 @@ export const Cards = StyleSheet.create({
         alignItems: 'center',
     },
     drop: {
-        width: '90%',
+        width: '80%',
         borderRadius: 12,
         borderColor: TextColors.disabled,
         borderWidth: 1,
@@ -296,10 +296,7 @@ export const Cards = StyleSheet.create({
         gap: 10
     },
     limited_icon_container: {
-        paddingTop: 4,
-        paddingLeft: 2,
-        paddingRight: 8,
-        paddingBottom: 5,
+        padding: 5,
         alignItems: 'center',
         alignSelf: 'stretch',
     },

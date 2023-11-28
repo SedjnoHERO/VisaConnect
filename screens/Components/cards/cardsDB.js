@@ -47,13 +47,15 @@ export const fetchDataFromDB = () => {
 
 
 // связать с БД, оформить в БД, сделать уникальными для county и type
-export const Drop = ({ dropType, setSelectedItem, isVisible }) => {
+export const Drop = ({ dropType, setSelectedItem, selectedItem, setIsVisible, isVisible, onSelectItem }) => {
     const [visaData, setVisaData] = useState([]);
 
     const handlePress = (item) => {
         setSelectedItem(item.visaCountry || item.visaType);
-        onSelectItem(item.visaCountry || item.visaType); // Вызов функции выбора элемента из DropInput
+        onSelectItem(item.visaCountry || item.visaType);
+        setIsVisible(false); // Закрываем Drop после выбора элемента
     };
+
 
     useEffect(() => {
         if (dropType === 'visaType') {
@@ -97,7 +99,7 @@ export const Drop = ({ dropType, setSelectedItem, isVisible }) => {
                         <View
                             style={[
                                 gStyle.Cards.drop_component,
-                                item.visaCountry || item.visaType === selectedItem ? gStyle.Cards.drop_component_focused : null,
+                                (item.visaCountry || item.visaType) === selectedItem ? gStyle.Cards.drop_component_focused : null,
                             ]}
                         >
                             <Text>{item.visaCountry || item.visaType}</Text>
