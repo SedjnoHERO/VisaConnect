@@ -1,7 +1,7 @@
 import * as SQLite from 'expo-sqlite';
 import { useState, useEffect } from 'react';
 import startCards from './startCards.json';
-import { TouchableOpacity, View, Text, Modal } from 'react-native';
+import { TouchableOpacity, View, Text } from 'react-native';
 import * as gStyle from "../../../assets/Styles/globalStyle";
 
 const db = SQLite.openDatabase('visa.db');
@@ -47,7 +47,7 @@ export const fetchDataFromDB = () => {
 
 
 // связать с БД, оформить в БД, сделать уникальными для county и type
-export const Drop = ({ dropType, setSelectedItem, selectedItem, setIsVisible, isVisible, onSelectItem }) => {
+export const Drop = ({ dropType, setSelectedItem, selectedItem, setIsVisible, is, onSelectItem }) => {
     const [visaData, setVisaData] = useState([]);
 
     const handlePress = (item) => {

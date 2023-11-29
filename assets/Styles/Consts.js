@@ -56,7 +56,6 @@ export const Inputs = ({ TextPlaceHolder, secure, valueInfo, ChangeText }) => {
             editable={true}
             onChangeText={ChangeText}
             autoCorrect={false}
-            textContentType='none'
         />
     );
 }

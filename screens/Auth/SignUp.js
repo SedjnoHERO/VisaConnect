@@ -96,7 +96,7 @@ export default function SignUp({ navigation }) {
                             <Inputs
                                 TextPlaceHolder={'Пароль'}
                                 ChangeText={handlePasswordChange}
-                                secure={true}
+                                // secure={true}
                                 valueInfo={password}
                             />
                         </View>
@@ -105,7 +105,7 @@ export default function SignUp({ navigation }) {
                             <Inputs
                                 TextPlaceHolder={'Пароль'}
                                 ChangeText={handleConfirmPasswordChange}
-                                secure={true}
+                                // secure={true}
                                 valueInfo={confirmPassword}
                             />
                         </View>

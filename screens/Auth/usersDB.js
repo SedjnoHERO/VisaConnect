@@ -1,7 +1,9 @@
 import * as SQlite from 'expo-sqlite';
 import { TouchableOpacity } from 'react-native';
+import { useUser } from './context';
 
 const db = SQlite.openDatabase('users.db');
+const { setUser } = useUser();
 
 export const initializeDatabase = () => {
     db.transaction(tx => {
@@ -38,7 +40,7 @@ export const checkExistingEmail = async (email) => {
 export const registerUser = async (username, password) => {
     try {
         await checkExistingEmail(username);
-
+        setUser(username);
         return new Promise((resolve, reject) => {
             db.transaction(tx => {
                 tx.executeSql(
@@ -66,6 +68,7 @@ export const registerUser = async (username, password) => {
 };
 
 export const loginUser = async (username, password) => {
+    setUser(username);
     return new Promise((resolve, reject) => {
         db.transaction(tx => {
             tx.executeSql(
@@ -93,7 +96,7 @@ export const loginUser = async (username, password) => {
 
 
 // для проверки всех существующих пользователей
-const getAllUsers = () => {
+export const getAllUsers = () => {
     return new Promise((resolve, reject) => {
         db.transaction(tx => {
             tx.executeSql(
@@ -118,19 +121,28 @@ const deleteAllUsers = () => {
     return new Promise((resolve, reject) => {
         db.transaction(tx => {
             tx.executeSql(
-                'DELETE FROM users',
+                'DROP TABLE IF EXISTS users',
                 [],
                 (_, results) => {
-                    resolve(results);
+                    tx.executeSql(
+                        'CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, password TEXT)',
+                        [],
+                        (_, results) => {
+                            resolve(results);
+                        },
+                        (_, error) => {
+                            reject(error);
+                        }
+                    );
                 },
                 (_, error) => {
                     reject(error);
-                    return false;
                 }
             );
         });
     });
 };
+
 export const InformationAbout = ({ actionType }) => {
     const handlePress = () => {
         if (actionType === 'delete') {

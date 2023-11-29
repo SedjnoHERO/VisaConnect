@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import * as Font from 'expo-font';
 import * as SplashScreen from "expo-splash-screen";
 import MainStack from "./navigation/navigate";
+import { UserProvider } from "./screens/Auth/context"; // Импортируйте провайдер из вашего файла контекста
 
 const fonts = () =>
   Font.loadAsync({
@@ -28,7 +29,11 @@ export default function App() {
   }, []);
 
   if (font) {
-    return <MainStack />;
+    return (
+      <UserProvider>
+        <MainStack />
+      </UserProvider>
+    );
   } else {
     return null;
   }

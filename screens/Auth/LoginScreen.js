@@ -57,7 +57,7 @@ export default function SignUp({ navigation }) {
                                 TextPlaceHolder={'Пароль'}
                                 ChangeText={handlePasswordChange}
                                 valueInfo={password}
-                                secure={true}
+                            // secure={true}
                             />
                         </View>
                         <Button_continue onPress={handleLogin} title='Авторизоваться' />
