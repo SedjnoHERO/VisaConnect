@@ -38,3 +38,14 @@ const addApplication = (userId, visaId, firstName, lastName, middleName, visaTyp
         );
     });
 };
+
+export const FetchButton = ({ }) => {
+
+    return (
+        <View>
+            <Text>
+                hi
+            </Text>
+        </View>
+    )
+}
