@@ -28,7 +28,7 @@ export const loadFromJsonToDB = async () => {
             });
         });
     } catch (error) {
-        console.log('Error loading data from JSON to DB:', error);
+        console.log('Ошибка перехода из JSON в БД:', error);
     }
 };
 

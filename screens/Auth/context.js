@@ -1,25 +1,17 @@
-import React, { createContext, useContext, useState } from 'react';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { createContext, useContext } from "react";
 
-const UserContext = createContext();
+export const UserContext = createContext({ storedLogin: {}, setStoredLogin: () => { } })
 
-export const UserProvider = ({ children }) => {
-    const [loggedInUser, setLoggedInUser] = useState(null);
+const { storedLogin, setStoredLogin } = useContext(UserContext)
 
-    const setUser = (user) => {
-        setLoggedInUser(user);
-    };
+export const persistLogin = (Login, message, status) => {
+    AsyncStorage.setItem('UserLogin', JSON.stringify(Credential))
+        .then(() => {
+            setStoredLogin(Credential);
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+}
 
-    return (
-        <UserContext.Provider value={{ loggedInUser, setUser }}>
-            {children}
-        </UserContext.Provider>
-    );
-};
-
-export const useUser = () => {
-    const context = useContext(UserContext);
-    if (!context) {
-        throw new Error('useUser must be used within a UserProvider');
-    }
-    return context;
-};
