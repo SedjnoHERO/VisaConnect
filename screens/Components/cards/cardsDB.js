@@ -47,7 +47,7 @@ export const fetchDataFromDB = () => {
 
 
 // связать с БД, оформить в БД, сделать уникальными для county и type
-export const Drop = ({ dropType, setSelectedItem, selectedItem, setIsVisible, is, onSelectItem }) => {
+export const Drop = ({ dropType, setSelectedItem, selectedItem, setIsVisible, isVisible, onSelectItem }) => {
     const [visaData, setVisaData] = useState([]);
 
     const handlePress = (item) => {

@@ -8,8 +8,6 @@ import SignUp from '../screens/Auth/SignUp';
 import specificInfo from '../screens/Components/info/specificInfo';
 import React, { useEffect, useState } from "react";
 
-import { UserContext } from "../screens/Auth/context";
-
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Feather, Ionicons, MaterialCommunityIcons, Octicons, } from "@expo/vector-icons";
 import * as gStyle from '../assets/Styles/globalStyle';
@@ -25,6 +23,8 @@ import CardFormes from '../screens/Components/cards/CardFormes'
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
+import { UserContext } from "../screens/Auth/context";
+
 function App() {
     return (
         <UserContext>
@@ -33,6 +33,11 @@ function App() {
                     <Stack.Navigator>
                         {storedLogin ?
                             <>
+                                <Stack.Screen name="Step1" component={Step1} options={{ headerShown: false }} />
+                                <Stack.Screen name="Step2" component={Step2} options={{ headerShown: false }} />
+                                <Stack.Screen name="Step3" component={Step3} options={{ headerShown: false }} />
+                                <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+                                <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
                                 <Stack.Screen name="Cards" component={TabNavigator} options={{ headerShown: false }} />
                                 <Stack.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
                                 <Stack.Screen name="Chat" component={Chat} options={{ headerShown: false }} />
@@ -43,11 +48,13 @@ function App() {
                             </>
                             :
                             <>
-                                <Stack.Screen name="Step1" component={Step1} options={{ headerShown: false }} />
-                                <Stack.Screen name="Step2" component={Step2} options={{ headerShown: false }} />
-                                <Stack.Screen name="Step3" component={Step3} options={{ headerShown: false }} />
-                                <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
-                                <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
+                                <Stack.Screen name="Cards" component={TabNavigator} options={{ headerShown: false }} />
+                                <Stack.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
+                                <Stack.Screen name="Chat" component={Chat} options={{ headerShown: false }} />
+                                <Stack.Screen name="Info" component={Info} options={{ headerShown: false }} />
+                                <Stack.Screen name="News" component={News} options={{ headerShown: false }} />
+                                <Stack.Screen name="specificInfo" component={specificInfo} options={{ headerShown: false }} />
+                                <Stack.Screen name="CardFormes" component={CardFormes} options={{ headerShown: false }} />
                             </>
                         }
                     </Stack.Navigator>

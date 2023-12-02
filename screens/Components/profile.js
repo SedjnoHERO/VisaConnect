@@ -1,12 +1,12 @@
 import react from "react";
 import { Text, View } from "react-native";
-import { Button_continue } from "../../assets/Styles/Consts";
+import { Logout } from '../Auth/usersDB';
+import * as gStyle from '../../assets/Styles/globalStyle';
 
 export default function Profile({ navigation }) {
     return (
-        <View style={{ left: 20, top: 200 }}>
-            <Text>Здравствуйте</Text>
-            <View><Button_continue onPress={() => { navigation.navigate('SignUp') }} /></View>
+        <View style={gStyle.gPage.page}>
+            <Logout />
         </View>
     );
 }

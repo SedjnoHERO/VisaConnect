@@ -86,17 +86,24 @@ export const Title = ({ text }) => {
 }
 
 export const DropInput = ({ headline, dropType, onChange }) => {
-    const [isFocused, setIsFocused] = useState(false);
+    const [focused, setFocused] = useState(false);
     const [selectedItem, setSelectedItem] = useState('');
-    const [isVisible, setIsVisible] = useState(false); // Добавим состояние для управления видимостью Drop
+    const [isVisible, setIsVisible] = useState(false);
+
+    const handlePress = () => {
+        setFocused(true);
+        setIsVisible(!isVisible);
+    };
 
     const handleFocus = () => {
-        setIsFocused(true);
-        setIsVisible(true); // При фокусировке показываем Drop
+        setFocused(true);
+        setIsVisible(true);
     };
+
     const handleBlur = () => {
-        setIsFocused(false);
+        setFocused(false);
     };
+
     const handleInputChange = (text) => {
         setSelectedItem(text);
         onChange(text);
@@ -107,22 +114,25 @@ export const DropInput = ({ headline, dropType, onChange }) => {
         <View style={{ ...gStyle.Cards.form, gap: 5, alignItems: 'flex-end' }}>
             <View style={gStyle.Cards.form}>
                 <Text style={gStyle.Cards.special_ts}>{headline}</Text>
-                <View style={isFocused ? gStyle.Cards.input_focused : gStyle.Cards.input}>
-                    <TextInput
-                        style={gStyle.Cards.container}
-                        placeholder={'Выбрать'}
-                        placeholderTextColor={gStyle.TextColors.disabled}
-                        value={selectedItem}
-                        onChangeText={handleInputChange}
-                        maxLength={30}
-                        onBlur={handleBlur}
-                        onFocus={handleFocus}
-                    />
-                    <CaretUpDown
-                        size={24}
-                        color={isFocused ? gStyle.TextColors.enabled : gStyle.TextColors.disabled}
-                    />
-                </View>
+                <TouchableOpacity onPress={handlePress}>
+                    <View style={focused ? gStyle.Cards.input_focused : gStyle.Cards.input}>
+                        <TextInput
+                            style={gStyle.Cards.container}
+                            placeholder={'Выбрать'}
+                            placeholderTextColor={gStyle.TextColors.disabled}
+                            value={selectedItem}
+                            onChangeText={handleInputChange}
+                            maxLength={30}
+                            onBlur={handleBlur}
+                            onFocus={handleFocus}
+                            editable={false}
+                        />
+                        <CaretUpDown
+                            size={24}
+                            color={focused ? gStyle.TextColors.enabled : gStyle.TextColors.disabled}
+                        />
+                    </View>
+                </TouchableOpacity>
             </View>
             <Drop
                 dropType={dropType}
@@ -137,10 +147,12 @@ export const DropInput = ({ headline, dropType, onChange }) => {
 };
 
 
-export const InputLimited = ({ length, headline }) => {
+
+export const InputLimited = ({ length, headline, onChange }) => {
     const [inputText, setInputText] = useState('');
     const [isFocused, setIsFocused] = useState(false);
     const [currentLength, setCurrentLength] = useState(0);
+
     const handleFocus = () => {
         setIsFocused(true);
     };
@@ -148,9 +160,10 @@ export const InputLimited = ({ length, headline }) => {
         setIsFocused(false);
     };
     const handleTextChange = (text) => {
-        setInputText(text); // Устанавливаем введенный текст
-        setCurrentLength(text.length); // Устанавливаем текущую длину введенного текста
-    }
+        onChange(text);
+        setInputText(text);
+        setCurrentLength(text.length);
+    };
     return (
         <View style={gStyle.Cards.form}>
             <Text style={gStyle.Cards.special_ts}>{headline}</Text>
@@ -179,7 +192,7 @@ export const InputLimited = ({ length, headline }) => {
     )
 }
 
-export const DefInput = ({ headline, text, active }) => {
+export const DefInput = ({ headline, text, active, onChange }) => {
     const [focused, setFocused] = useState(false);
     const [inputText, setInputText] = useState('');
 
@@ -191,6 +204,11 @@ export const DefInput = ({ headline, text, active }) => {
         setFocused(false);
     };
 
+    const handleInputChange = (text) => {
+        setInputText(text);
+        onChange(text);
+    };
+
     return (
         <View style={{ flexDirection: 'column', gap: 10 }}>
             <Text style={[{ paddingHorizontal: '5%', fontFamily: 'reg', fontSize: 16, color: active ? gStyle.TextColors.black : gStyle.TextColors.disabled }]}>{headline}</Text>
@@ -200,7 +218,7 @@ export const DefInput = ({ headline, text, active }) => {
                     placeholder={text}
                     placeholderTextColor="#d3d3d3"
                     value={inputText}
-                    onChangeText={setInputText}
+                    onChangeText={handleInputChange}
                     onFocus={handleFocus}
                     onBlur={handleBlur}
                     editable={active}

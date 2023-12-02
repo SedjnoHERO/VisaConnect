@@ -2,70 +2,59 @@ import React, { useState, useEffect } from "react";
 import * as Font from 'expo-font';
 import * as SplashScreen from "expo-splash-screen";
 import MainStack from "./navigation/navigate";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { UserProvider } from "./screens/Auth/context";
 
-const fonts = () => {
-  Font.loadAsync({
+const loadFonts = async () => {
+  await Font.loadAsync({
     "light": require("./assets/fonts/SF-Light.otf"),
     "med": require("./assets/fonts/SF-Medium.otf"),
     "bold": require("./assets/fonts/SF-Bold.otf"),
     "reg": require("./assets/fonts/SF-Regular.otf"),
   });
-}
-
-import AppLoading from 'expo-app-loading';
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { UserContext } from "./screens/Auth/context";
+};
 
 export default function App() {
-  const [font, setFont] = useState(false);
+  const [fontLoaded, setFontLoaded] = useState(false);
   const [appReady, setAppReady] = useState(false);
-  const [storedLogin, setStoredLogin] = useState('')
+  const [storedLogin, setStoredLogin] = useState('');
 
   useEffect(() => {
-    async function loadFonts() {
+    async function loadApp() {
       try {
-        await fonts();
-        setFont(true);
         await SplashScreen.preventAutoHideAsync();
+        await loadFonts();
+        setFontLoaded(true);
+        await checkLogin();
+        setAppReady(true);
+        await SplashScreen.hideAsync();
       } catch (error) {
         console.log('Ошибка запуска', error)
       }
     }
-    loadFonts();
+    loadApp();
   }, []);
 
-
-  const checkLogin = () => {
-    AsyncStorage
-      .getItem('UserLogin')
-      .then((result) => {
-        if (result !== null) {
-          setStoredLogin(JSON.parse(result));
-        } else {
-          setStoredLogin(null);
-        }
-      })
-      .catch(error => console.log(error))
+  const checkLogin = async () => {
+    try {
+      const result = await AsyncStorage.getItem('UserLogin');
+      if (result !== null) {
+        setStoredLogin(JSON.parse(result));
+      } else {
+        setStoredLogin(null);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
 
-  if (!appReady) {
-    return (
-      <AppLoading
-        startAsync={checkLogin}
-        onFinish={() => setAppReady(true)}
-        onError={console.warn}
-      />
-    )
-  }
-
-  if (font && appReady) {
-    return (
-      <UserContext value={{ storedLogin, setStoredLogin }}>
-        <MainStack />
-      </UserContext>
-    );
-  } else {
+  if (!appReady || !fontLoaded) {
     return null;
   }
 
+  return (
+    <UserProvider>
+      <MainStack />
+    </UserProvider>
+  );
 }

@@ -3,11 +3,12 @@ import { Keyboard, Text, KeyboardAvoidingView, View, TouchableOpacity } from 're
 import * as gStyle from '../../assets/Styles/globalStyle';
 import { Inputs, Button_continue } from '../../assets/Styles/Consts';
 import { initializeDatabase, loginUser, InformationAbout } from './usersDB';
-
+import { useUserContext } from './context';
 
 export default function SignUp({ navigation }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const { storedLogin, setStoredLogin } = useUserContext();
 
     useEffect(() => {
         initializeDatabase();
@@ -23,7 +24,7 @@ export default function SignUp({ navigation }) {
 
     const handleLogin = async () => {
         try {
-            const loginResult = await loginUser(email, password);
+            const loginResult = await loginUser(email, password, setStoredLogin);
             console.log(loginResult);
             navigation.navigate('Cards');
         } catch (error) {
@@ -66,8 +67,7 @@ export default function SignUp({ navigation }) {
                             <TouchableOpacity style={{ top: 10 }} onPress={() => navigation.navigate('SignUp')}><Text style={gStyle.Texts.normal_ts}>Зарегистрироваться</Text></TouchableOpacity>
                         </View>
                     </View>
-                    <InformationAbout type='delete' />
-                    <InformationAbout type='display' />
+                    <InformationAbout actionType='display' />
                 </>
             </TouchableOpacity>
         </KeyboardAvoidingView >

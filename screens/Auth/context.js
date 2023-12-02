@@ -1,17 +1,42 @@
+import React, { createContext, useContext, useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { createContext, useContext } from "react";
 
-export const UserContext = createContext({ storedLogin: {}, setStoredLogin: () => { } })
+export const UserContext = createContext({
+    storedLogin: {},
+    setStoredLogin: () => { },
+});
 
-const { storedLogin, setStoredLogin } = useContext(UserContext)
+export const UserProvider = ({ children }) => {
+    const [storedLogin, setStoredLogin] = useState({});
 
-export const persistLogin = (Login, message, status) => {
-    AsyncStorage.setItem('UserLogin', JSON.stringify(Credential))
-        .then(() => {
-            setStoredLogin(Credential);
-        })
-        .catch((error) => {
-            console.log(error);
-        })
-}
+    useEffect(() => {
+        if (Object.keys(storedLogin).length !== 0) {
+            console.log("Пользователь авторизован:", storedLogin.username);
+        } else {
+            console.log("Нет авторизованного пользователя");
+        }
+    }, [storedLogin]);
 
+    const persistLogin = (credential) => {
+        AsyncStorage.setItem("UserLogin", JSON.stringify(credential))
+            .then(() => {
+                setStoredLogin(credential);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+
+    const contextValue = {
+        storedLogin,
+        setStoredLogin: persistLogin,
+    };
+
+    return (
+        <UserContext.Provider value={contextValue}>{children}</UserContext.Provider>
+    );
+};
+
+export const useUserContext = () => {
+    return useContext(UserContext);
+};

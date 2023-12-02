@@ -1,6 +1,6 @@
 import * as SQlite from 'expo-sqlite';
-import { TouchableOpacity } from 'react-native';
-
+import { TouchableOpacity, Text } from 'react-native';
+import { useUserContext } from './context';
 
 const db = SQlite.openDatabase('users.db');
 
@@ -65,7 +65,8 @@ export const registerUser = async (username, password) => {
     }
 };
 
-export const loginUser = async (username, password) => {
+export const loginUser = async (username, password, setStoredLogin) => {
+    const userContext = useUserContext();
     return new Promise((resolve, reject) => {
         db.transaction(tx => {
             tx.executeSql(
@@ -74,6 +75,7 @@ export const loginUser = async (username, password) => {
                 (_, results) => {
                     const len = results.rows.length;
                     if (len > 0) {
+                        setStoredLogin({ username });
                         resolve('Авторизация успешна');
                     } else {
                         reject('Неверный логин или пароль');
@@ -90,7 +92,31 @@ export const loginUser = async (username, password) => {
 
 
 
+export const Logout = ({ navigation }) => {
+    const userContext = useUserContext();
 
+    const handlePress = () => {
+        if (userContext && userContext.setStoredLogin) {
+            userContext.setStoredLogin(null);
+        }
+    };
+
+    return (
+        <TouchableOpacity
+            onPress={handlePress}
+            style={{
+                backgroundColor: 'red',
+                color: 'white',
+                width: 100,
+                height: 100,
+                justifyContent: 'center',
+                alignItems: 'center',
+            }}
+        >
+            <Text style={{ color: 'white' }}>Выйти</Text>
+        </TouchableOpacity>
+    );
+};
 
 // для проверки всех существующих пользователей
 export const getAllUsers = () => {
@@ -114,6 +140,7 @@ export const getAllUsers = () => {
         });
     })
 };
+
 const deleteAllUsers = () => {
     return new Promise((resolve, reject) => {
         db.transaction(tx => {
@@ -172,3 +199,4 @@ export const InformationAbout = ({ actionType }) => {
         />
     );
 };
+

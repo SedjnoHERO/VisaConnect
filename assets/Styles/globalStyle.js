@@ -1,5 +1,4 @@
-import { Component } from "react";
-import { StyleSheet, TextComponent } from "react-native";
+import { StyleSheet } from "react-native";
 
 export const Colors = StyleSheet.create({
     main_color: '#F8FBFF',
