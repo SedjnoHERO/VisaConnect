@@ -25,22 +25,16 @@ export default function SignUp({ navigation }) {
         validateFields();
     }, [email, password, confirmPassword]);
 
-    const handleEmailChange = async (text) => {
+    const handleEmailChange = (text) => {
         setEmail(text);
-        try {
-            const emailExists = await checkExistingEmail(text);
-            setIsRegisterEnabled(
-                password === confirmPassword &&
-                password.length !== 0 &&
-                text.length !== 0 &&
-                emailExists !== true &&
-                text.includes('@')
-            );
-        } catch (error) {
-            console.log(error);
-        }
+        setIsRegisterEnabled(
+            password === confirmPassword &&
+            password.length !== 0 &&
+            text.length !== 0 &&
+            emailRegex.test(text) &&
+            text.includes('@')
+        );
     };
-
 
 
     const handlePasswordChange = text => {

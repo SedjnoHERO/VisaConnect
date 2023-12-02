@@ -65,6 +65,32 @@ export const registerUser = async (username, password) => {
     }
 };
 
+export const checkLogin = () => {
+    return new Promise((resolve, reject) => {
+        db.transaction(tx => {
+            tx.executeSql(
+                'SELECT * FROM users',
+                [],
+                (_, results) => {
+                    if (results.rows.length > 0) {
+                        const result = results.rows.item(0);
+                        console.log('Результат запроса:', result);
+                        resolve(result);
+                    } else {
+                        console.log('Нет данных');
+                        resolve(null);
+                    }
+                },
+                (_, error) => {
+                    console.log('Ошибка SQL:', error);
+                    reject(error);
+                }
+            );
+        });
+    });
+};
+
+
 export const loginUser = async (username, password, setStoredLogin) => {
     const userContext = useUserContext();
     return new Promise((resolve, reject) => {

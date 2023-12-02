@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+
 export const UserContext = createContext({
     storedLogin: {},
     setStoredLogin: () => { },
@@ -8,6 +9,12 @@ export const UserContext = createContext({
 
 export const UserProvider = ({ children }) => {
     const [storedLogin, setStoredLogin] = useState({});
+    const [otherData, setOtherData] = useState({});
+
+    useEffect(() => {
+
+        setOtherData({})
+    })
 
     useEffect(() => {
         if (Object.keys(storedLogin).length !== 0) {
@@ -30,6 +37,7 @@ export const UserProvider = ({ children }) => {
     const contextValue = {
         storedLogin,
         setStoredLogin: persistLogin,
+        otherData
     };
 
     return (

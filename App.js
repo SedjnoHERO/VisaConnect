@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import * as Font from 'expo-font';
 import * as SplashScreen from "expo-splash-screen";
 import MainStack from "./navigation/navigate";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { checkLogin } from "./screens/Auth/usersDB";
 import { UserProvider } from "./screens/Auth/context";
 
 const loadFonts = async () => {
@@ -25,7 +25,7 @@ export default function App() {
         await SplashScreen.preventAutoHideAsync();
         await loadFonts();
         setFontLoaded(true);
-        await checkLogin();
+        await handleCheckLogin();
         setAppReady(true);
         await SplashScreen.hideAsync();
       } catch (error) {
@@ -35,18 +35,18 @@ export default function App() {
     loadApp();
   }, []);
 
-  const checkLogin = async () => {
+  const handleCheckLogin = async () => {
     try {
-      const result = await AsyncStorage.getItem('UserLogin');
+      const result = await checkLogin();
       if (result !== null) {
-        setStoredLogin(JSON.parse(result));
+        setStoredLogin(result);
       } else {
         setStoredLogin(null);
       }
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   if (!appReady || !fontLoaded) {
     return null;
