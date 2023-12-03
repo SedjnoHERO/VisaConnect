@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import * as Font from 'expo-font';
 import * as SplashScreen from "expo-splash-screen";
 import MainStack from "./navigation/navigate";
-import { checkLogin } from "./screens/Auth/usersDB";
 import { UserProvider } from "./screens/Auth/context";
 
 const loadFonts = async () => {
@@ -25,7 +24,7 @@ export default function App() {
         await SplashScreen.preventAutoHideAsync();
         await loadFonts();
         setFontLoaded(true);
-        await handleCheckLogin();
+        // await handleCheckLogin();
         setAppReady(true);
         await SplashScreen.hideAsync();
       } catch (error) {
@@ -35,18 +34,6 @@ export default function App() {
     loadApp();
   }, []);
 
-  const handleCheckLogin = async () => {
-    try {
-      const result = await checkLogin();
-      if (result !== null) {
-        setStoredLogin(result);
-      } else {
-        setStoredLogin(null);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   if (!appReady || !fontLoaded) {
     return null;

@@ -7,7 +7,14 @@ const db = SQlite.openDatabase('users.db');
 export const initializeDatabase = () => {
     db.transaction(tx => {
         tx.executeSql(
-            'CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, password TEXT, passport TEXT, date TEXT, firstName TEXT, surname TEXT, fatherName TEXT, documentPath TEXT)'
+            'CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, password TEXT, passport TEXT, date TEXT, firstName TEXT, surname TEXT, fatherName TEXT, documentPath TEXT, lastLogin TEXT DEFAULT NULL, isAdmin TEXT)',
+            [],
+            (_, results) => {
+                console.log('Таблица пользователей успешно создана или уже существует');
+            },
+            (_, error) => {
+                console.log('Ошибка создания таблицы пользователей:', error);
+            }
         );
     });
 };
@@ -67,22 +74,26 @@ export const registerUser = async (username, password) => {
 
 export const checkLogin = () => {
     return new Promise((resolve, reject) => {
-        db.transaction(tx => {
+        db.transaction((tx) => {
             tx.executeSql(
-                'SELECT * FROM users',
+                "SELECT * FROM users WHERE lastLogin IS NOT NULL AND lastLogin != ''",
                 [],
                 (_, results) => {
-                    if (results.rows.length > 0) {
-                        const result = results.rows.item(0);
-                        console.log('Результат запроса:', result);
-                        resolve(result);
+                    const users = [];
+                    for (let i = 0; i < results.rows.length; i++) {
+                        const user = results.rows.item(i);
+                        users.push(user);
+                    }
+                    if (users.length > 0) {
+                        console.log("Последний вошедший:", users);
+                        resolve(users);
                     } else {
-                        console.log('Нет данных');
-                        resolve(null);
+                        console.log("Нету последнего пользователя");
+                        resolve([]);
                     }
                 },
                 (_, error) => {
-                    console.log('Ошибка SQL:', error);
+                    console.log("SQL ошибка:", error);
                     reject(error);
                 }
             );
@@ -91,8 +102,8 @@ export const checkLogin = () => {
 };
 
 
+
 export const loginUser = async (username, password, setStoredLogin) => {
-    const userContext = useUserContext();
     return new Promise((resolve, reject) => {
         db.transaction(tx => {
             tx.executeSql(
@@ -101,8 +112,25 @@ export const loginUser = async (username, password, setStoredLogin) => {
                 (_, results) => {
                     const len = results.rows.length;
                     if (len > 0) {
-                        setStoredLogin({ username });
-                        resolve('Авторизация успешна');
+                        const user = results.rows.item(0);
+                        const currentDate = new Date().toISOString(); // Get current date/time
+                        db.transaction(tx => {
+                            tx.executeSql(
+                                'UPDATE users SET lastLogin = ? WHERE id = ?',
+                                [currentDate, user.id],
+                                (_, updateResult) => {
+                                    if (updateResult.rowsAffected > 0) {
+                                        resolve('Авторизация успешна');
+                                    } else {
+                                        reject('Ошибка обновления lastLogin');
+                                    }
+                                },
+                                (_, error) => {
+                                    console.log('Ошибка SQL при обновлении lastLogin:', error);
+                                    reject(error);
+                                }
+                            );
+                        });
                     } else {
                         reject('Неверный логин или пароль');
                     }
@@ -118,18 +146,13 @@ export const loginUser = async (username, password, setStoredLogin) => {
 
 
 
-export const Logout = ({ navigation }) => {
-    const userContext = useUserContext();
 
-    const handlePress = () => {
-        if (userContext && userContext.setStoredLogin) {
-            userContext.setStoredLogin(null);
-        }
-    };
+export const Logout = ({ navigation }) => {
+    const { logout } = useUserContext();
 
     return (
         <TouchableOpacity
-            onPress={handlePress}
+            onPress={logout}
             style={{
                 backgroundColor: 'red',
                 color: 'white',
@@ -156,7 +179,7 @@ export const getAllUsers = () => {
                     if (len > 0) {
                         for (let i = 0; i < len; i++) {
                             const row = results.rows.item(i);
-                            console.log(`Пользователь ${row.username}, Пароль ${row.password}, ID: ${row.id}`);
+                            console.log(results.rows);
                         }
                     } else {
                         console.log('Нет зарегистрированных пользователей');
@@ -175,7 +198,7 @@ const deleteAllUsers = () => {
                 [],
                 (_, results) => {
                     tx.executeSql(
-                        'CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, password TEXT)',
+                        'CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, password TEXT, passport TEXT, date TEXT, firstName TEXT, surname TEXT, fatherName TEXT, documentPath TEXT, lastLogin TEXT DEFAULT NULL, isAdmin TEXT)',
                         [],
                         (_, results) => {
                             resolve(results);
