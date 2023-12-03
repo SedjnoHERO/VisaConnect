@@ -4,6 +4,9 @@ import * as SplashScreen from "expo-splash-screen";
 import MainStack from "./navigation/navigate";
 import { UserProvider } from "./screens/Auth/context";
 
+import { LogBox } from 'react-native';
+LogBox.ignoreLogs(['Warning: ...']);
+
 const loadFonts = async () => {
   await Font.loadAsync({
     "light": require("./assets/fonts/SF-Light.otf"),
@@ -17,7 +20,6 @@ export default function App() {
   const [fontLoaded, setFontLoaded] = useState(false);
   const [appReady, setAppReady] = useState(false);
   const [storedLogin, setStoredLogin] = useState('');
-
   useEffect(() => {
     async function loadApp() {
       try {

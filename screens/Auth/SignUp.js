@@ -3,7 +3,7 @@ import { Keyboard, Text, KeyboardAvoidingView, View, TouchableOpacity } from 're
 import * as gStyle from '../../assets/Styles/globalStyle';
 import { Inputs, Button_continue } from '../../assets/Styles/Consts';
 import { registerUser, InformationAbout, checkExistingEmail } from './usersDB';
-
+import { useUserContext } from './context';
 
 export default function SignUp({ navigation }) {
     const [email, setEmail] = useState('');
@@ -54,7 +54,7 @@ export default function SignUp({ navigation }) {
                     console.log('Пользователь с такой почтой уже существует');
                 } else {
                     await registerUser(email, password);
-                    navigation.navigate('Cards');
+                    navigation.navigate('Login');
                 }
             } else {
                 console.log('Ошибка при регистрации пользователя');
@@ -63,7 +63,6 @@ export default function SignUp({ navigation }) {
             console.log(error);
         }
     };
-
 
     return (
         <KeyboardAvoidingView

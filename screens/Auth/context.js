@@ -69,7 +69,7 @@ export const UserProvider = ({ children }) => {
                             resolve(user);
                         } else {
                             console.log("Нет авторизированного пользователя");
-                            resolve({}); // Возвращаем пустой объект вместо null
+                            resolve({});
                         }
                     },
                     (_, error) => {

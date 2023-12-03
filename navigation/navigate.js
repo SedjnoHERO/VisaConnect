@@ -27,70 +27,22 @@ import { UserContext } from "../screens/Auth/context";
 
 function App() {
     const { storedLogin } = useContext(UserContext);
-    console.log(111, storedLogin)
     return (
+        //сделать более быструю обработку => работоспособный автоматический переход в зависимости от авторизавнного пользователя
         <NavigationContainer>
-            <Stack.Navigator initialRouteName={storedLogin ? 'Step1' : 'Cards'}>
-                <Stack.Screen
-                    name="Step1"
-                    component={Step1}
-                    options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                    name="Step2"
-                    component={Step2}
-                    options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                    name="Step3"
-                    component={Step3}
-                    options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                    name="Login"
-                    component={Login}
-                    options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                    name="SignUp"
-                    component={SignUp}
-                    options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                    name="Cards"
-                    component={TabNavigator}
-                    options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                    name="Profile"
-                    component={Profile}
-                    options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                    name="Chat"
-                    component={Chat}
-                    options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                    name="Info"
-                    component={Info}
-                    options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                    name="News"
-                    component={News}
-                    options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                    name="specificInfo"
-                    component={specificInfo}
-                    options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                    name="CardFormes"
-                    component={CardFormes}
-                    options={{ headerShown: false }}
-                />
+            <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName={storedLogin ? 'Step1' : 'Cards'}>
+                <Stack.Screen name="Step1" component={Step1} />
+                <Stack.Screen name="Step2" component={Step2} />
+                <Stack.Screen name="Step3" component={Step3} />
+                <Stack.Screen name="Login" component={Login} />
+                <Stack.Screen name="SignUp" component={SignUp} />
+                <Stack.Screen name="Cards" component={TabNavigator} options={{ gestureEnabled: false }} />
+                <Stack.Screen name="Profile" component={Profile} />
+                <Stack.Screen name="Chat" component={Chat} />
+                <Stack.Screen name="Info" component={Info} />
+                <Stack.Screen name="News" component={News} />
+                <Stack.Screen name="specificInfo" component={specificInfo} />
+                <Stack.Screen name="CardFormes" component={CardFormes} />
             </Stack.Navigator>
         </NavigationContainer>
     );

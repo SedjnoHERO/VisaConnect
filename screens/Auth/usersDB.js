@@ -1,10 +1,12 @@
 import * as SQlite from 'expo-sqlite';
 import { TouchableOpacity, Text } from 'react-native';
 import { UserContext } from './context';
+import { useCallback } from 'react';
 
 const db = SQlite.openDatabase('users.db');
 
 export const initializeDatabase = () => {
+    initializeAdminUser();
     db.transaction(tx => {
         tx.executeSql(
             'CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, password TEXT, passport TEXT, date TEXT, firstName TEXT, surname TEXT, fatherName TEXT, documentPath TEXT, lastLogin TEXT DEFAULT NULL, isAdmin TEXT)',
@@ -14,6 +16,32 @@ export const initializeDatabase = () => {
             },
             (_, error) => {
                 console.log('Ошибка создания таблицы пользователей:', error);
+            }
+        );
+    });
+};
+
+const initializeAdminUser = () => {
+    db.transaction(tx => {
+        tx.executeSql(
+            'SELECT * FROM users WHERE username = ?',
+            ['admin'],
+            (_, results) => {
+                if (results.rows.length === 0) {
+                    tx.executeSql(
+                        'INSERT INTO users (username, password, isAdmin) VALUES (?, ?, ?)',
+                        ['admin', 'admin', 'true'],
+                        (_, insertResults) => {
+                            console.log('Пользователь admin успешно добавлен');
+                        },
+                        (_, error) => {
+                            console.log('Ошибка при добавлении пользователя:', error);
+                        }
+                    );
+                }
+            },
+            (_, error) => {
+                console.log('Ошибка при проверке пользователя:', error);
             }
         );
     });
@@ -82,7 +110,8 @@ export const loginUser = async (username, password, setStoredLogin) => {
                     const len = results.rows.length;
                     if (len > 0) {
                         const user = results.rows.item(0);
-                        const currentDate = new Date().toISOString(); // Get current date/time
+                        const currentDate = new Date().toLocaleString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }).replace(',', '');
+
                         db.transaction(tx => {
                             tx.executeSql(
                                 'UPDATE users SET lastLogin = ? WHERE id = ?',
@@ -113,8 +142,7 @@ export const loginUser = async (username, password, setStoredLogin) => {
     });
 };
 
-
-export const Logout = () => {
+export const Logout = ({ navigation }) => {
     const handleLogout = () => {
         db.transaction((tx) => {
             tx.executeSql(
@@ -122,6 +150,7 @@ export const Logout = () => {
                 [],
                 (_, results) => {
                     console.log('Пользователь вышел из системы.');
+                    navigation.navigate('Step3');
                 },
                 (_, error) => {
                     console.log('Ошибка при очистке lastLogin:', error);
@@ -142,10 +171,11 @@ export const Logout = () => {
                 borderRadius: 5,
             }}
         >
-            <Text style={{ color: 'white' }}>Очистить lastLogin</Text>
+            <Text style={{ color: 'white' }}>Выйти из аккаунта</Text>
         </TouchableOpacity>
     );
 };
+
 
 // для проверки всех существующих пользователей
 export const getAllUsers = () => {
@@ -159,7 +189,13 @@ export const getAllUsers = () => {
                     if (len > 0) {
                         for (let i = 0; i < len; i++) {
                             const row = results.rows.item(i);
-                            console.log(results.rows);
+                            const elements = [];
+                            for (const key in row) {
+                                if (row[key] !== null) {
+                                    elements.push(`${key}: ${row[key]}`);
+                                }
+                            }
+                            console.log(elements.join(', '));
                         }
                     } else {
                         console.log('Нет зарегистрированных пользователей');
@@ -167,8 +203,9 @@ export const getAllUsers = () => {
                 }
             );
         });
-    })
+    });
 };
+
 
 const deleteAllUsers = () => {
     return new Promise((resolve, reject) => {
@@ -197,7 +234,7 @@ const deleteAllUsers = () => {
 };
 
 export const InformationAbout = ({ actionType }) => {
-    const handlePress = () => {
+    const handlePress = useCallback(() => {
         if (actionType === 'delete') {
             deleteAllUsers()
                 .then(() => {
@@ -209,7 +246,7 @@ export const InformationAbout = ({ actionType }) => {
         } else if (actionType === 'display') {
             getAllUsers();
         }
-    };
+    }, [actionType]);
 
     const infColor = actionType === 'delete' ? 'red' : 'blue';
     const positionStyle = actionType === 'delete' ? { left: 50, bottom: 50 } : { right: 50, bottom: 50 };
@@ -228,4 +265,6 @@ export const InformationAbout = ({ actionType }) => {
         />
     );
 };
+
+
 
