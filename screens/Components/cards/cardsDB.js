@@ -8,6 +8,7 @@ const db = SQLite.openDatabase('visa.db');
 
 // Создаем таблицу в базе данных, если она не существует
 export const createTable = () => {
+    loadFromJsonToDB();
     db.transaction((tx) => {
         tx.executeSql(
             'CREATE TABLE IF NOT EXISTS VisaInfo (ID INTEGER PRIMARY KEY AUTOINCREMENT, visaCountry TEXT, visaType TEXT, cost REAL);'
@@ -15,22 +16,42 @@ export const createTable = () => {
     });
 };
 
-// Загружаем данные из JSON файла в базу данных
-export const loadFromJsonToDB = async () => {
+const clearTable = () => {
     try {
-        const data = startCards;
         db.transaction((tx) => {
-            data.forEach((item) => {
-                tx.executeSql(
-                    'INSERT INTO VisaInfo (id, visaCountry, visaType, cost) VALUES (?, ?, ?, ?);',
-                    [item.id, item.visaCountry, item.visaType, item.cost]
-                );
+            tx.executeSql('DELETE FROM VisaInfo;', [], (_, result) => {
+                console.log('Таблица VisaInfo успешно очищена.');
             });
         });
+    } catch (error) {
+        console.log('Ошибка при очистке таблицы VisaInfo:', error);
+    }
+};
+
+// Загружаем данные из JSON файла в базу данных
+let dataLoaded = false;
+
+const loadFromJsonToDB = async () => {
+    try {
+        if (!dataLoaded) {
+            const data = startCards;
+            db.transaction((tx) => {
+                data.forEach((item) => {
+                    tx.executeSql(
+                        'INSERT INTO VisaInfo (id, visaCountry, visaType, cost) VALUES (?, ?, ?, ?);',
+                        [item.id, item.visaCountry, item.visaType, item.cost]
+                    );
+                });
+            });
+            dataLoaded = true;
+        } else {
+            console.log('Данные уже загружены в базу.');
+        }
     } catch (error) {
         console.log('Ошибка перехода из JSON в БД:', error);
     }
 };
+
 
 //показать всё из visa.db
 export const fetchDataFromDB = () => {
@@ -43,19 +64,38 @@ export const fetchDataFromDB = () => {
         });
     });
 };
-
-
-
-// связать с БД, оформить в БД, сделать уникальными для county и type
+export const getAdditionalInfo = ({ visaType, visaCountry }, callback) => {
+    db.transaction((tx) => {
+        tx.executeSql(
+            'SELECT ID, cost FROM VisaInfo WHERE visaType = ? AND visaCountry = ?;',
+            [visaType, visaCountry],
+            (_, results) => {
+                const len = results.rows.length;
+                if (len > 0) {
+                    const fetchedData = [];
+                    for (let i = 0; i < len; i++) {
+                        const { ID, cost } = results.rows.item(i);
+                        fetchedData.push({ ID, cost });
+                        console.log(`ID: ${ID}, Страна: ${visaCountry}, Тип: ${visaType}, Стоимость: ${cost}`);
+                    }
+                    callback(fetchedData); // Передача данных через колбэк
+                } else {
+                    callback([]); // Если нет записей, передаем пустой массив
+                }
+            },
+            (txObj, error) => console.error('Ошибка:', error)
+        );
+    });
+};
 export const Drop = ({ dropType, setSelectedItem, selectedItem, setIsVisible, isVisible, onSelectItem }) => {
     const [visaData, setVisaData] = useState([]);
 
     const handlePress = (item) => {
-        setSelectedItem(item.visaCountry || item.visaType);
-        onSelectItem(item.visaCountry || item.visaType);
-        setIsVisible(false); // Закрываем Drop после выбора элемента
+        const selected = item.visaCountry || item.visaType;
+        setSelectedItem(selected);
+        onSelectItem(selected);
+        setIsVisible(false);
     };
-
 
     useEffect(() => {
         if (dropType === 'visaType') {
@@ -87,7 +127,8 @@ export const Drop = ({ dropType, setSelectedItem, selectedItem, setIsVisible, is
                 );
             });
         }
-    }, [dropType, db]);
+    }, [dropType]);
+
     return (
         isVisible && (
             <View style={gStyle.Cards.drop}>

@@ -52,6 +52,7 @@ export const UserProvider = ({ children }) => {
     useEffect(() => {
         if (Object.keys(storedLogin).length !== 0) {
             console.log("Пользователь авторизован:", storedLogin.username);
+            console.log("id:", storedLogin.id);
         } else {
             console.log("Нет авторизованного пользователя");
         }

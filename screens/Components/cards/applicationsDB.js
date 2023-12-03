@@ -1,37 +1,44 @@
 import * as SQLite from 'expo-sqlite';
 import { TouchableOpacity, Text } from 'react-native';
+import * as gStyle from '../../../assets/Styles/globalStyle';
 
+const db = SQLite.openDatabase('Applications.db');
 
-const db = SQLite.openDatabase('applications.db');
-
-const createApplicationsTable = () => {
+export const createApplicationsTable = () => {
     db.transaction(tx => {
         tx.executeSql(
             `CREATE TABLE IF NOT EXISTS Applications (
-        application_id INTEGER PRIMARY KEY AUTOINCREMENT,
-        user_id INTEGER,
-        visa_id INTEGER,
-        first_name TEXT,
-        last_name TEXT,
-        father_name TEXT,
-        visa_type TEXT,
-        visa_country TEXT,
-        note TEXT,
-        photo_path TEXT,
-        FOREIGN KEY (user_id) REFERENCES users(id),
-        FOREIGN KEY (visa_id) REFERENCES visa(ID)
-      );`
+                        application_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        user_id INTEGER,
+                        visa_id INTEGER,
+                        cost REAL,
+                        first_name TEXT,
+                        last_name TEXT,
+                        father_name TEXT,
+                        visa_type TEXT,
+                        visa_country TEXT,
+                        note TEXT,
+                        photo_path TEXT
+                    );`,
+            [],
+            () => {
+                console.log('Таблица Applications создана');
+            },
+            (_, error) => {
+                console.log('Ошибка создания таблицы Applications:', error);
+            }
         );
     });
 };
 
-// Функция для добавления новой заявки в таблицу Applications
-const addApplication = (userId, visaId, firstName, lastName, fatherName, visaType, visaCountry, note, photoPath) => {
+// ...
+
+const addApplication = (userId, visaId, cost, firstName, lastName, fatherName, visaType, visaCountry, note, photoPath) => {
     db.transaction(tx => {
         tx.executeSql(
-            `INSERT INTO Applications (user_id, visa_id, first_name, last_name, father_name, visa_type, visa_country, note, photo_path) 
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-            [userId, visaId, firstName, lastName, fatherName, visaType, visaCountry, note, photoPath],
+            `INSERT INTO Applications (user_id, visa_id, cost, first_name, last_name, father_name, visa_type, visa_country, note, photo_path) 
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            [userId, visaId, cost, firstName, lastName, fatherName, visaType, visaCountry, note, photoPath],
             (_, { insertId }) => {
                 console.log('Заявка добавлена, ID:', insertId);
             },
@@ -42,22 +49,15 @@ const addApplication = (userId, visaId, firstName, lastName, fatherName, visaTyp
     });
 };
 
-export const FetchButton = ({ active, visaType, visaCountry, note, firstName, lastName, fatherName }) => {
+export const FetchButton = ({ active, userId, visaId, cost, firstName, lastName, fatherName, visaType, visaCountry, note }) => {
     const handleAddApplication = () => {
-        addApplication(firstName, lastName, fatherName, visaType, visaCountry, note,);
-        createApplicationsTable();
+        addApplication(userId, visaId, cost, firstName, lastName, fatherName, visaType, visaCountry, note);
     };
 
     return (
         <TouchableOpacity
             onPress={handleAddApplication}
-            style={{
-                backgroundColor: active ? 'blue' : 'gray',
-                padding: 10,
-                borderRadius: 5,
-                alignItems: 'center',
-                marginTop: 20,
-            }}
+            style={gStyle.ButtonStyles.button_continue}
             disabled={!active}
         >
             <Text style={{ color: 'white' }}>Отправить заявку</Text>
@@ -78,7 +78,7 @@ export const getAllApplications = () => {
                     if (len > 0) {
                         for (let i = 0; i < len; i++) {
                             const row = results.rows.item(i);
-                            console.log(`applicID: ${row.application_id}, visaID: ${row.visa_id}, userID: ${row.user_id}, Имя: ${row.first_name}, Фамилия: ${row.last_name}, Отчество: ${row.father_name}, Тип визы: ${row.visa_type}, Страна для визы: ${row.visa_country}, Примечание: ${row.note}`);
+                            console.log(`applicID: ${row.application_id}, visaID: ${row.visa_id}, userID: ${row.user_id}, Цена: ${row.cost}, Имя: ${row.first_name}, Фамилия: ${row.last_name}, Отчество: ${row.father_name}, Тип визы: ${row.visa_type}, Страна для визы: ${row.visa_country}, Примечание: ${row.note}`);
                         }
                     } else {
                         console.log('Нет сохраненных заявок');
@@ -114,32 +114,10 @@ const deleteAllApplic = () => {
     return new Promise((resolve, reject) => {
         db.transaction(tx => {
             tx.executeSql(
-                'DROP TABLE IF EXISTS Applications',
+                'DELETE FROM Applications',
                 [],
                 (_, results) => {
-                    tx.executeSql(
-                        `CREATE TABLE IF NOT EXISTS Applications (
-                            application_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                            user_id INTEGER,
-                            visa_id INTEGER,
-                            first_name TEXT,
-                            last_name TEXT,
-                            father_name TEXT,
-                            visa_type TEXT,
-                            visa_country TEXT,
-                            note TEXT,
-                            photo_path TEXT,
-                            FOREIGN KEY (user_id) REFERENCES users(id),
-                            FOREIGN KEY (visa_id) REFERENCES visa(ID)
-                          );`,
-                        [],
-                        (_, results) => {
-                            resolve(results);
-                        },
-                        (_, error) => {
-                            reject(error);
-                        }
-                    );
+                    resolve(results);
                 },
                 (_, error) => {
                     reject(error);

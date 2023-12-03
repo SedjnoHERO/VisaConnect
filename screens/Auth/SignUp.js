@@ -13,29 +13,25 @@ export default function SignUp({ navigation }) {
 
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-    useEffect(() => {
-        const validateFields = () => {
-            setIsRegisterEnabled(
-                password === confirmPassword &&
-                password.length !== 0 &&
-                email.length !== 0
-            );
-        };
+    const validateFields = (email, password, confirmPassword) => {
+        return (
+            password === confirmPassword &&
+            password.length >= 5 &&
+            password.length !== 0 &&
+            email.length !== 0 &&
+            emailRegex.test(email) &&
+            email.includes('@')
+        );
+    };
 
-        validateFields();
+    useEffect(() => {
+        setIsRegisterEnabled(validateFields(email, password, confirmPassword));
     }, [email, password, confirmPassword]);
 
     const handleEmailChange = (text) => {
         setEmail(text);
-        setIsRegisterEnabled(
-            password === confirmPassword &&
-            password.length !== 0 &&
-            text.length !== 0 &&
-            emailRegex.test(text) &&
-            text.includes('@')
-        );
+        setIsRegisterEnabled(validateFields(text, password, confirmPassword));
     };
-
 
     const handlePasswordChange = text => {
         setPassword(text);

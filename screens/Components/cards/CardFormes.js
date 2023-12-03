@@ -1,12 +1,16 @@
 import { View, TouchableOpacity, Keyboard, KeyboardAvoidingView, ScrollView } from "react-native";
 import * as gStyle from '../../../assets/Styles/globalStyle';
 import { InputLimited, Title, DropInput, DefInput } from "../../../assets/Styles/Consts"
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { FetchButton, ShowAllApplic } from "./applicationsDB";
+import { useUserContext } from '../../Auth/context';
+import { getAdditionalInfo } from "./cardsDB";
+import { createApplicationsTable } from "./applicationsDB";
 
 export default function CardFormes({ navigation }) {
     const [firstSideState, setFirstSideState] = useState(false);
     const [fetchAccess, setFetchAccess] = useState(false);
+    const { storedLogin } = useUserContext();
 
     const [visaType, setVisaType] = useState('');
     const [visaCountry, setVisaCountry] = useState('');
@@ -14,8 +18,11 @@ export default function CardFormes({ navigation }) {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [fatherName, setFatherName] = useState('');
+    const [visaData, setVisaData] = useState([]);
 
     useEffect(() => {
+        createApplicationsTable();
+
         if (visaType.length > 6 && visaCountry.length > 4) {
             setFirstSideState(true);
         } else {
@@ -34,6 +41,9 @@ export default function CardFormes({ navigation }) {
     useEffect(() => {
         if (visaType.length > 0 && visaCountry.length > 0 && note.length > 0 && firstName.length > 0 && lastName.length > 0 && fatherName.length > 0) {
             setFetchAccess(true);
+            getAdditionalInfo({ visaType, visaCountry }, (fetchedData) => {
+                setVisaData(fetchedData);
+            });
         } else {
             setFetchAccess(false);
         }
@@ -45,7 +55,7 @@ export default function CardFormes({ navigation }) {
             style={[gStyle.gPage.page, { flex: 1 }]}>
             <TouchableOpacity onPress={Keyboard.dismiss} activeOpacity={1} style={{ flex: 1 }}>
                 <ScrollView>
-                    <View style={{ ...gStyle.gPage.page, alignItems: 'center' }}>
+                    <View style={{ ...gStyle.gPage.page, alignItems: 'center', gap: '20%' }}>
                         <Title text='Заполните информацию' />
                         <View style={{ flexDirection: 'column', flex: 1, justifyContent: 'flex-start', width: '75%', gap: '20%', marginTop: '3%', }}>
                             <View style={{ flexDirection: 'column', flex: 1, rowGap: '20%', paddingHorizontal: '3%' }}>
@@ -62,6 +72,9 @@ export default function CardFormes({ navigation }) {
                         </View>
                         <FetchButton
                             active={fetchAccess}
+                            userId={storedLogin.id}
+                            visaId={visaData.map((item) => item.ID).join(', ')}
+                            cost={visaData.map((item) => item.cost).join(', ')}
                             visaType={visaType}
                             visaCountry={visaCountry}
                             note={note}

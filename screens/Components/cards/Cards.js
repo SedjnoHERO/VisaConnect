@@ -2,13 +2,12 @@ import React from "react";
 import { SafeAreaView, TouchableOpacity, View, Text } from "react-native";
 import * as gStyle from '../../../assets/Styles/globalStyle';
 import { PlusSquare } from 'phosphor-react-native';
-import { createTable, loadFromJsonToDB } from './cardsDB';
+import { createTable } from './cardsDB';
 import { useUserContext } from '../../Auth/context';
 
 export default function Cards({ navigation }) {
     // Вызываем функции для создания таблицы и загрузки данных
     createTable();
-    loadFromJsonToDB();
     const { storedLogin } = useUserContext();
 
     return (

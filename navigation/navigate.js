@@ -1,5 +1,5 @@
 import { createStackNavigator } from "@react-navigation/stack";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import Step1 from '../screens/WelcomeScreens/Step1';
 import Step2 from "../screens/WelcomeScreens/Step2";
 import Step3 from "../screens/WelcomeScreens/Step3";
@@ -23,14 +23,11 @@ import CardFormes from '../screens/Components/cards/CardFormes'
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
-import { UserContext } from "../screens/Auth/context";
-
 function App() {
-    const { storedLogin } = useContext(UserContext);
+
     return (
-        //сделать более быструю обработку => работоспособный автоматический переход в зависимости от авторизавнного пользователя
         <NavigationContainer>
-            <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName={storedLogin ? 'Step1' : 'Cards'}>
+            <Stack.Navigator screenOptions={{ headerShown: false }}>
                 <Stack.Screen name="Step1" component={Step1} />
                 <Stack.Screen name="Step2" component={Step2} />
                 <Stack.Screen name="Step3" component={Step3} />
