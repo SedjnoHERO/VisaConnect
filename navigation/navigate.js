@@ -26,7 +26,7 @@ const Tab = createBottomTabNavigator();
 import { UserContext } from "../screens/Auth/context";
 
 function App() {
-    const { storedLogin, loading } = useContext(UserContext);
+    const { storedLogin } = useContext(UserContext);
     console.log(111, storedLogin)
     return (
         <NavigationContainer>

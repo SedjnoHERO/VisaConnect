@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { checkLogin } from "./usersDB";
+import * as SQlite from 'expo-sqlite';
 
+const db = SQlite.openDatabase('users.db');
 
 export const UserContext = createContext({
     storedLogin: {},
@@ -16,7 +16,7 @@ export const UserProvider = ({ children }) => {
     useEffect(() => {
         const initializeUserContext = async () => {
             try {
-                const result = await checkLogin();
+                const result = await persistLogin();
                 if (result !== null) {
                     setOtherData(result);
                 } else {
@@ -34,7 +34,7 @@ export const UserProvider = ({ children }) => {
 
     const handleCheckLogin = async () => {
         try {
-            const result = await checkLogin();
+            const result = await persistLogin();
             if (result !== null) {
                 setStoredLogin(result);
             } else {
@@ -57,18 +57,28 @@ export const UserProvider = ({ children }) => {
         }
     }, [storedLogin]);
 
-    const persistLogin = (credential) => {
-        AsyncStorage.setItem("UserLogin", JSON.stringify(credential))
-            .then(() => {
-                setStoredLogin(credential);
-            })
-            .catch((error) => {
-                console.log(error);
+    const persistLogin = () => {
+        return new Promise((resolve, reject) => {
+            db.transaction((tx) => {
+                tx.executeSql(
+                    'SELECT * FROM users WHERE lastLogin IS NOT null AND lastLogin != "" LIMIT 1',
+                    [],
+                    (_, results) => {
+                        if (results.rows.length > 0) {
+                            const user = results.rows.item(0);
+                            resolve(user);
+                        } else {
+                            console.log("Нет авторизированного пользователя");
+                            resolve({}); // Возвращаем пустой объект вместо null
+                        }
+                    },
+                    (_, error) => {
+                        console.log("SQL ошибка:", error);
+                        reject(error);
+                    }
+                );
             });
-    };
-
-    const logout = () => {
-        setStoredLogin({});
+        });
     };
 
     const contextValue = {

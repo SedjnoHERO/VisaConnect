@@ -1,6 +1,6 @@
 import * as SQlite from 'expo-sqlite';
 import { TouchableOpacity, Text } from 'react-native';
-import { useUserContext } from './context';
+import { UserContext } from './context';
 
 const db = SQlite.openDatabase('users.db');
 
@@ -72,37 +72,6 @@ export const registerUser = async (username, password) => {
     }
 };
 
-export const checkLogin = () => {
-    return new Promise((resolve, reject) => {
-        db.transaction((tx) => {
-            tx.executeSql(
-                "SELECT * FROM users WHERE lastLogin IS NOT NULL AND lastLogin != ''",
-                [],
-                (_, results) => {
-                    const users = [];
-                    for (let i = 0; i < results.rows.length; i++) {
-                        const user = results.rows.item(i);
-                        users.push(user);
-                    }
-                    if (users.length > 0) {
-                        console.log("Последний вошедший:", users);
-                        resolve(users);
-                    } else {
-                        console.log("Нету последнего пользователя");
-                        resolve([]);
-                    }
-                },
-                (_, error) => {
-                    console.log("SQL ошибка:", error);
-                    reject(error);
-                }
-            );
-        });
-    });
-};
-
-
-
 export const loginUser = async (username, password, setStoredLogin) => {
     return new Promise((resolve, reject) => {
         db.transaction(tx => {
@@ -145,24 +114,35 @@ export const loginUser = async (username, password, setStoredLogin) => {
 };
 
 
-
-
-export const Logout = ({ navigation }) => {
-    const { logout } = useUserContext();
+export const Logout = () => {
+    const handleLogout = () => {
+        db.transaction((tx) => {
+            tx.executeSql(
+                'UPDATE users SET lastLogin = null',
+                [],
+                (_, results) => {
+                    console.log('Пользователь вышел из системы.');
+                },
+                (_, error) => {
+                    console.log('Ошибка при очистке lastLogin:', error);
+                }
+            );
+        });
+    };
 
     return (
         <TouchableOpacity
-            onPress={logout}
+            onPress={handleLogout}
             style={{
                 backgroundColor: 'red',
-                color: 'white',
                 width: 100,
-                height: 100,
+                height: 40,
                 justifyContent: 'center',
                 alignItems: 'center',
+                borderRadius: 5,
             }}
         >
-            <Text style={{ color: 'white' }}>Выйти</Text>
+            <Text style={{ color: 'white' }}>Очистить lastLogin</Text>
         </TouchableOpacity>
     );
 };
