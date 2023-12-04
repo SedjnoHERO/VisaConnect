@@ -1,5 +1,5 @@
 import { createStackNavigator } from "@react-navigation/stack";
-import { NavigationContainer, useNavigation } from "@react-navigation/native";
+import { NavigationContainer } from "@react-navigation/native";
 import Step1 from '../screens/WelcomeScreens/Step1';
 import Step2 from "../screens/WelcomeScreens/Step2";
 import Step3 from "../screens/WelcomeScreens/Step3";
@@ -7,7 +7,7 @@ import Login from "../screens/Auth/LoginScreen";
 import SignUp from '../screens/Auth/SignUp';
 import specificInfo from '../screens/Components/info/specificInfo';
 import React, { useContext, useEffect, useState } from "react";
-
+import Admin from '../screens/Auth/AdminScreen';
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Feather, Ionicons, MaterialCommunityIcons, Octicons, } from "@expo/vector-icons";
 import * as gStyle from '../assets/Styles/globalStyle';
@@ -19,6 +19,7 @@ import News from '../screens/Components/news/globalNews';
 import { Keyboard } from "react-native";
 import { CustomIcon } from "../assets/Styles/Consts";
 import CardFormes from '../screens/Components/cards/CardFormes'
+
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -40,6 +41,7 @@ function App() {
                 <Stack.Screen name="News" component={News} />
                 <Stack.Screen name="specificInfo" component={specificInfo} />
                 <Stack.Screen name="CardFormes" component={CardFormes} />
+                <Stack.Screen name="Admin" component={Admin} options={{ gestureEnabled: false }} />
             </Stack.Navigator>
         </NavigationContainer>
     );

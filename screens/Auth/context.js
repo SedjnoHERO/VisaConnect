@@ -12,6 +12,7 @@ export const UserProvider = ({ children }) => {
     const [storedLogin, setStoredLogin] = useState({});
     const [otherData, setOtherData] = useState({});
     const [loading, setLoading] = useState(true);
+    const [isAdmin, setIsAdmin] = useState(false)
 
     useEffect(() => {
         const initializeUserContext = async () => {
@@ -22,6 +23,9 @@ export const UserProvider = ({ children }) => {
                 } else {
                     setOtherData(null);
                 }
+                await checkUserAdminStatus();
+                console.log(isAdmin);
+
             } catch (error) {
                 console.log(error);
             } finally {
@@ -32,11 +36,16 @@ export const UserProvider = ({ children }) => {
         initializeUserContext();
     }, []);
 
+
     const handleCheckLogin = async () => {
         try {
-            const result = await persistLogin();
-            if (result !== null) {
+            const user = await persistLogin();
+            if (user && user.id) {
                 setStoredLogin(result);
+                const isAdmin = await checkUserAdminStatus();
+                if (isAdmin) {
+                    console.log('Вы админ, вот вам и админ экран')
+                }
             } else {
                 setStoredLogin(null);
             }
@@ -44,6 +53,7 @@ export const UserProvider = ({ children }) => {
             console.log(error);
         }
     };
+
 
     useEffect(() => {
         handleCheckLogin();
@@ -82,11 +92,37 @@ export const UserProvider = ({ children }) => {
         });
     };
 
+    const checkUserAdminStatus = () => {
+        return new Promise((resolve, reject) => {
+            db.transaction((tx) => {
+                tx.executeSql(
+                    'SELECT * FROM users WHERE isAdmin IS NOT null AND isAdmin != "" LIMIT 1',
+                    [],
+                    (_, results) => {
+                        if (results.rows.length > 0) {
+                            const isAdmin = results.rows.item(0).isAdmin === 'true';
+                            resolve(isAdmin);
+                            setIsAdmin(true);
+                        } else {
+                            resolve(false);
+                            setIsAdmin(false)
+                        }
+                    },
+                    (_, error) => {
+                        console.log("SQL ошибка:", error);
+                        reject(error);
+                    }
+                );
+            });
+        });
+    };
+
     const contextValue = {
         storedLogin,
         loading,
         setStoredLogin: persistLogin,
         otherData,
+        isAdmin,
     };
 
     return (

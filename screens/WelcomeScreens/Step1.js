@@ -6,12 +6,17 @@ import { UserContext } from '../Auth/context';
 
 export default function Step1({ navigation }) {
     const { storedLogin } = useContext(UserContext);
+    const { isAdmin } = useContext(UserContext)
 
     useEffect(() => {
-        if (storedLogin.username) {
+        if (isAdmin) {
+            console.log(isAdmin);
+            navigation.navigate('Admin');
+        } else if (storedLogin.username) {
             navigation.navigate('Cards');
+            console.log(isAdmin);
         } else { }
-    }, [storedLogin])
+    }, [isAdmin, storedLogin]);
 
     return (
         <View style={gStyle.gPage.page}>

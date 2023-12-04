@@ -26,7 +26,11 @@ export default function SignUp({ navigation }) {
         try {
             const loginResult = await loginUser(email, password, setStoredLogin);
             console.log(loginResult);
-            navigation.navigate('Cards');
+            if (loginResult.isAdmin) {
+                navigation.navigate('Admin');
+            } else {
+                navigation.navigate('Cards');
+            }
         } catch (error) {
             console.log(error);
         }

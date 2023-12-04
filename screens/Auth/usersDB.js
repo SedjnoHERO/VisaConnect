@@ -1,7 +1,8 @@
 import * as SQlite from 'expo-sqlite';
 import { TouchableOpacity, Text } from 'react-native';
 import { UserContext } from './context';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
 
 const db = SQlite.openDatabase('users.db');
 
@@ -112,13 +113,17 @@ export const loginUser = async (username, password, setStoredLogin) => {
                         const user = results.rows.item(0);
                         const currentDate = new Date().toLocaleString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }).replace(',', '');
 
-                        db.transaction(tx => {
-                            tx.executeSql(
+                        db.transaction(innerTx => {
+                            innerTx.executeSql(
                                 'UPDATE users SET lastLogin = ? WHERE id = ?',
                                 [currentDate, user.id],
                                 (_, updateResult) => {
                                     if (updateResult.rowsAffected > 0) {
-                                        resolve('Авторизация успешна');
+                                        if (user.isAdmin === 'true') {
+                                            resolve({ message: 'Авторизация успешна для администратора', isAdmin: true });
+                                        } else {
+                                            resolve({ message: 'Авторизация успешна', isAdmin: false });
+                                        }
                                     } else {
                                         reject('Ошибка обновления lastLogin');
                                     }
@@ -176,6 +181,15 @@ export const Logout = ({ navigation }) => {
     );
 };
 
+// для админа
+export const fetchUsersData = (setUsers) => {
+    db.transaction(tx => {
+        tx.executeSql('SELECT * FROM users', [], (_, { rows }) => {
+            const fetchedUsers = rows._array;
+            setUsers(fetchedUsers);
+        });
+    });
+};
 
 // для проверки всех существующих пользователей
 export const getAllUsers = () => {
