@@ -3,6 +3,7 @@ import { TouchableOpacity, Text } from 'react-native';
 import { UserContext } from './context';
 import { useCallback, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import * as gStyle from '../../assets/Styles/globalStyle';
 
 const db = SQlite.openDatabase('users.db');
 
@@ -167,16 +168,9 @@ export const Logout = ({ navigation }) => {
     return (
         <TouchableOpacity
             onPress={handleLogout}
-            style={{
-                backgroundColor: 'red',
-                width: 100,
-                height: 40,
-                justifyContent: 'center',
-                alignItems: 'center',
-                borderRadius: 5,
-            }}
+            style={gStyle.ButtonStyles.button_continue}
         >
-            <Text style={{ color: 'white' }}>Выйти из аккаунта</Text>
+            <Text style={[gStyle.Texts.normal_ts, { color: 'white' }]}>Выйти из аккаунта</Text>
         </TouchableOpacity>
     );
 };

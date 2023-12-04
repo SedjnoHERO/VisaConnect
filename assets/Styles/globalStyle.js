@@ -114,7 +114,6 @@ export const gPage = StyleSheet.create({
     headline: {
         ...Texts.title,
         textAlign: 'center',
-        marginBottom: 30,
         marginTop: 20
     },
     title: {

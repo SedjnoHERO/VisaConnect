@@ -28,6 +28,7 @@ const clearTable = () => {
     }
 };
 
+
 // Загружаем данные из JSON файла в базу данных
 let dataLoaded = false;
 
@@ -52,18 +53,48 @@ const loadFromJsonToDB = async () => {
     }
 };
 
-
-//показать всё из visa.db
-export const fetchDataFromDB = () => {
-    return new Promise((resolve, reject) => {
-        db.transaction((tx) => {
-            tx.executeSql('SELECT * FROM VisaInfo;', [], (_, { rows }) => {
-                const data = rows._array;
-                resolve(data);
-            });
-        });
+//для админа
+export const insertDataToVisaInfo = (visaCountry, visaType, cost) => {
+    db.transaction((tx) => {
+        tx.executeSql(
+            'INSERT INTO VisaInfo (visaCountry, visaType, cost) VALUES (?, ?, ?);',
+            [visaCountry, visaType, cost],
+            (_, results) => {
+                console.log('Данные успешно добавлены в таблицу VisaInfo');
+            },
+            (_, error) => {
+                console.log('Ошибка при добавлении данных в таблицу VisaInfo:', error);
+            }
+        );
     });
 };
+export const LoadButton = ({ buttonState, country, type, cost }) => {
+    const handlePress = insertDataToVisaInfo(country, type, cost);
+    return (
+        <TouchableOpacity onPress={handlePress} disabled={buttonState} style={{ marginTop: 20, alignSelf: 'flex-end' }}>
+            <Text style={{ color: buttonState ? '#242424' : '#d3d3d3' }}>Добавить визу</Text>
+        </TouchableOpacity>
+    )
+}
+
+//показать всё из visa.db
+export const fetchDataFromDB = (setVisaInfo) => {
+    db.transaction((tx) => {
+        tx.executeSql(
+            'SELECT * FROM VisaInfo;',
+            [],
+            (_, { rows }) => {
+                const data = rows._array;
+                setVisaInfo(data)
+            },
+            (_, error) => {
+                console.log('Ошибка при извлечении данных:', error);
+            }
+        );
+    });
+};
+
+
 export const getAdditionalInfo = ({ visaType, visaCountry }, callback) => {
     db.transaction((tx) => {
         tx.executeSql(
@@ -87,6 +118,7 @@ export const getAdditionalInfo = ({ visaType, visaCountry }, callback) => {
         );
     });
 };
+
 export const Drop = ({ dropType, setSelectedItem, selectedItem, setIsVisible, isVisible, onSelectItem }) => {
     const [visaData, setVisaData] = useState([]);
 

@@ -24,15 +24,14 @@ export const UserProvider = ({ children }) => {
                     setOtherData(null);
                 }
                 await checkUserAdminStatus();
-                console.log(isAdmin);
+                console.log('isAdmin ', isAdmin);
 
             } catch (error) {
-                console.log(error);
+                console.log('Ошибка инициализации котнекста', error);
             } finally {
                 setLoading(false);
             }
         };
-
         initializeUserContext();
     }, []);
 
@@ -40,12 +39,8 @@ export const UserProvider = ({ children }) => {
     const handleCheckLogin = async () => {
         try {
             const user = await persistLogin();
-            if (user && user.id) {
-                setStoredLogin(result);
-                const isAdmin = await checkUserAdminStatus();
-                if (isAdmin) {
-                    console.log('Вы админ, вот вам и админ экран')
-                }
+            if (user) {
+                setStoredLogin(user);
             } else {
                 setStoredLogin(null);
             }
@@ -100,12 +95,10 @@ export const UserProvider = ({ children }) => {
                     [],
                     (_, results) => {
                         if (results.rows.length > 0) {
-                            const isAdmin = results.rows.item(0).isAdmin === 'true';
+                            const isAdmin = storedLogin.isAdmin;
                             resolve(isAdmin);
-                            setIsAdmin(true);
                         } else {
                             resolve(false);
-                            setIsAdmin(false)
                         }
                     },
                     (_, error) => {
@@ -116,6 +109,7 @@ export const UserProvider = ({ children }) => {
             });
         });
     };
+
 
     const contextValue = {
         storedLogin,

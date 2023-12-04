@@ -192,7 +192,7 @@ export const InputLimited = ({ length, headline, onChange }) => {
     )
 }
 
-export const DefInput = ({ headline, text, active, onChange }) => {
+export const DefInput = ({ headline, text, active, onChange, theType }) => {
     const [focused, setFocused] = useState(false);
     const [inputText, setInputText] = useState('');
 
@@ -209,11 +209,15 @@ export const DefInput = ({ headline, text, active, onChange }) => {
         onChange(text);
     };
 
+    const typeDefault = 'default'
+    const defaultActive = 'true'
+
     return (
         <View style={{ flexDirection: 'column', gap: 10 }}>
-            <Text style={[{ paddingHorizontal: '5%', fontFamily: 'reg', fontSize: 16, color: active ? gStyle.TextColors.black : gStyle.TextColors.disabled }]}>{headline}</Text>
+            <Text style={[{ paddingHorizontal: '5%', fontFamily: 'reg', fontSize: 16, color: (active || defaultActive) ? gStyle.TextColors.black : gStyle.TextColors.disabled }]}>{headline}</Text>
             <View style={{ borderRadius: 12, borderColor: focused ? '#797979' : '#d3d3d3', borderWidth: 1, flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: '5%', height: 45, alignItems: 'center' }}>
                 <TextInput
+                    keyboardType={theType || typeDefault}
                     style={gStyle.Cards.container}
                     placeholder={text}
                     placeholderTextColor="#d3d3d3"
@@ -221,7 +225,7 @@ export const DefInput = ({ headline, text, active, onChange }) => {
                     onChangeText={handleInputChange}
                     onFocus={handleFocus}
                     onBlur={handleBlur}
-                    editable={active}
+                    editable={active || defaultActive}
                 />
             </View>
         </View>

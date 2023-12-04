@@ -9,12 +9,14 @@ export default function Step1({ navigation }) {
     const { isAdmin } = useContext(UserContext)
 
     useEffect(() => {
-        if (isAdmin) {
-            console.log(isAdmin);
-            navigation.navigate('Admin');
-        } else if (storedLogin.username) {
-            navigation.navigate('Cards');
-            console.log(isAdmin);
+        if (storedLogin.username) {
+            console.log('isAdmin в юзефект:', isAdmin)
+            if (storedLogin.isAdmin) {
+                console.log('Вы админ, вот вам и админ экран')
+                navigation.navigate('Admin');
+            } else {
+                navigation.navigate('Cards');
+            }
         } else { }
     }, [isAdmin, storedLogin]);
 
