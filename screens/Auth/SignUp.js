@@ -106,7 +106,9 @@ export default function SignUp({ navigation }) {
                         />
                         <View style={{ flexDirection: 'column', alignItems: 'center', top: 15 }}>
                             <Text style={gStyle.Texts.button_skip_ts}>Уже зарегистрированы?</Text>
-                            <TouchableOpacity style={{ top: 10 }} onPress={() => navigation.navigate('Login')}><Text style={gStyle.Texts.normal_ts}>Войти</Text></TouchableOpacity>
+                            <TouchableOpacity style={{ top: 10 }} onPress={() => navigation.navigate('Login')}>
+                                <Text style={gStyle.Texts.normal_ts}>Войти</Text>
+                            </TouchableOpacity>
                         </View>
                     </View>
                     <InformationAbout actionType='delete' />

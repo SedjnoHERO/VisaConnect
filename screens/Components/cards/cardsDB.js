@@ -8,6 +8,7 @@ const db = SQLite.openDatabase('visa.db');
 
 // Создаем таблицу в базе данных, если она не существует
 export const createTable = () => {
+    clearTable()
     loadFromJsonToDB();
     db.transaction((tx) => {
         tx.executeSql(
@@ -46,7 +47,6 @@ const loadFromJsonToDB = async () => {
             });
             dataLoaded = true;
         } else {
-            console.log('Данные уже загружены в базу.');
         }
     } catch (error) {
         console.log('Ошибка перехода из JSON в БД:', error);

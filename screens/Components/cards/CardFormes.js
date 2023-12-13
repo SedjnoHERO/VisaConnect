@@ -22,7 +22,6 @@ export default function CardFormes({ navigation }) {
 
     useEffect(() => {
         createApplicationsTable();
-
         if (visaType.length > 6 && visaCountry.length > 4) {
             setFirstSideState(true);
         } else {

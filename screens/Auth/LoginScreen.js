@@ -68,7 +68,9 @@ export default function SignUp({ navigation }) {
                         <Button_continue onPress={handleLogin} title='Авторизоваться' />
                         <View style={{ flexDirection: 'column', alignItems: 'center', top: 15 }}>
                             <Text style={gStyle.Texts.button_skip_ts}>Впервые пользуетесь?</Text>
-                            <TouchableOpacity style={{ top: 10 }} onPress={() => navigation.navigate('SignUp')}><Text style={gStyle.Texts.normal_ts}>Зарегистрироваться</Text></TouchableOpacity>
+                            <TouchableOpacity style={{ top: 10 }} onPress={() => navigation.navigate('SignUp')}>
+                                <Text style={gStyle.Texts.normal_ts}>Зарегистрироваться</Text>
+                            </TouchableOpacity>
                         </View>
                     </View>
                     <InformationAbout actionType='display' />

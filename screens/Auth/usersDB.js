@@ -2,7 +2,6 @@ import * as SQlite from 'expo-sqlite';
 import { TouchableOpacity, Text } from 'react-native';
 import { UserContext } from './context';
 import { useCallback, useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
 import * as gStyle from '../../assets/Styles/globalStyle';
 
 const db = SQlite.openDatabase('users.db');

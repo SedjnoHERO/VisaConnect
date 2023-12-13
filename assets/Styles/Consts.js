@@ -192,7 +192,7 @@ export const InputLimited = ({ length, headline, onChange }) => {
     )
 }
 
-export const DefInput = ({ headline, text, active, onChange, theType }) => {
+export const DefInput = ({ headline, text, active, onChange, theType, validate }) => {
     const [focused, setFocused] = useState(false);
     const [inputText, setInputText] = useState('');
 
@@ -205,6 +205,10 @@ export const DefInput = ({ headline, text, active, onChange, theType }) => {
     };
 
     const handleInputChange = (text) => {
+        if (validate && !validate(text)) {
+            return;
+        }
+
         setInputText(text);
         onChange(text);
     };

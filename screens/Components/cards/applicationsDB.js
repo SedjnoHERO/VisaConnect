@@ -4,6 +4,8 @@ import * as gStyle from '../../../assets/Styles/globalStyle';
 
 const db = SQLite.openDatabase('Applications.db');
 
+
+//добавить в БД даты, количество въездов, количество дней, статус.
 export const createApplicationsTable = () => {
     db.transaction(tx => {
         tx.executeSql(
@@ -32,7 +34,6 @@ export const createApplicationsTable = () => {
 };
 
 // ...
-
 const addApplication = (userId, visaId, cost, firstName, lastName, fatherName, visaType, visaCountry, note, photoPath) => {
     db.transaction(tx => {
         tx.executeSql(
@@ -65,6 +66,15 @@ export const FetchButton = ({ active, userId, visaId, cost, firstName, lastName,
     );
 };
 
+//Админ
+export const fetchApplicData = (setAppl) => {
+    db.transaction(tx => {
+        tx.executeSql('SELECT * FROM Applications', [], (_, { rows }) => {
+            const fetchedApplic = rows._array;
+            setAppl(fetchedApplic);
+        });
+    });
+};
 
 // вывод всех заявок
 export const getAllApplications = () => {

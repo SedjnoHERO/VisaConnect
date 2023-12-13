@@ -5,18 +5,22 @@ import * as gStyle from '../../assets/Styles/globalStyle';
 import { UserContext } from './context';
 import { Logout, fetchUsersData } from './usersDB';
 import { fetchDataFromDB, createTable, LoadButton } from '../Components/cards/cardsDB';
+import { fetchApplicData } from '../Components/cards/applicationsDB';
 
 export default function Admin({ navigation }) {
     const [usersModalVisible, setUsersModalVisible] = useState(false);
     const [visaInfoModalVisible, setVisaInfoModalVisible] = useState(false);
+    const [applModalVisible, setApplModalVisible] = useState(false);
     const [users, setUsers] = useState([]);
     const [visaInfo, setVisaInfo] = useState([]);
+    const [appl, setAppl] = useState([]);
 
     createTable()
 
     useEffect(() => {
         fetchUsersData(setUsers);
         fetchDataFromDB(setVisaInfo);
+        fetchApplicData(setAppl)
     }, []);
 
     const openUsersModal = () => {
@@ -35,6 +39,13 @@ export default function Admin({ navigation }) {
         setVisaInfoModalVisible(false);
     };
 
+    const openApplModal = () => {
+        setApplModalVisible(true);
+    }
+    const closeApplModal = () => {
+        setApplModalVisible(false);
+    }
+
     return (
         <View style={{ ...gStyle.gPage.page, justifyContent: 'center', alignItems: 'center', gap: '30%' }}>
             <View style={{ flex: 0.7, width: '90%', alignItems: 'center', gap: '10%' }}>
@@ -46,7 +57,7 @@ export default function Admin({ navigation }) {
                 {openUsersModal}
 
                 <View style={{ flex: 1, backgroundColor: gStyle.Colors.secondary_accent_color, width: '80%', borderRadius: 12, padding: 20, }}>
-                    <TouchableOpacity onPress={{}} style={{ width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                    <TouchableOpacity onPress={openApplModal} style={{ width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center' }}>
                         <Text style={[gStyle.Texts.title, gStyle.TextColors.white]}>Просмотреть заявки</Text>
                     </TouchableOpacity>
                 </View>
@@ -60,11 +71,54 @@ export default function Admin({ navigation }) {
             </View>
             <Logout navigation={navigation} />
 
+            <ApplicBase visible={applModalVisible} closeModal={closeApplModal} appl={appl} />
             <VisaBase visible={visaInfoModalVisible} closeModal={closeVisaInfoModal} visaInfo={visaInfo} />
             <UsersBase visible={usersModalVisible} closeModal={closeUsersModal} users={users} />
         </View >
     );
 }
+
+const ApplicBase = ({ visible, closeModal, appl }) => {
+    const renderAppl = ({ item }) => {
+        return (
+            <View style={{ borderBottomWidth: 1, padding: 10 }}>
+                <Text>ID заявки: {item.application_id}</Text>
+                <Text>ID заявителя: {item.user_id}</Text>
+                <Text>ID визы: {item.visa_id}</Text>
+                <Text>Фамилия: {item.last_name}</Text>
+                <Text>Имя: {item.first_name}</Text>
+                <Text>Отчество: {item.father_name}</Text>
+                <Text>Цена визы: {item.cost}</Text>
+                <Text>Тип запрошенной визы: {item.visa_type}</Text>
+                <Text>Страна запрошенной визы: {item.visa_country}</Text>
+                <Text>Примечание: {item.note}</Text>
+            </View>
+        );
+    };
+
+    return (
+        <Modal
+            visible={visible}
+            animationType="slide"
+            onRequestClose={closeModal}
+            transparent={true}
+        >
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
+                <View style={{ backgroundColor: 'white', padding: 20, borderRadius: 10, width: '80%', height: '60%' }}>
+                    <Text style={{ fontSize: 20, marginBottom: 20 }}>Заявки</Text>
+                    <FlatList
+                        data={appl}
+                        renderItem={renderAppl}
+                        keyExtractor={(item) => (item.id ? item.id.toString() : Math.random().toString())}
+                    />
+                    <TouchableOpacity onPress={closeModal} style={{ marginTop: 20, alignSelf: 'flex-end' }}>
+                        <Text>Закрыть</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        </Modal>
+    );
+};
 
 const VisaBase = ({ visible, closeModal, visaInfo }) => {
     const [secondModalVisible, setSecondModalVisible] = useState(false); // Состояние для второй модальной панели
@@ -81,12 +135,16 @@ const VisaBase = ({ visible, closeModal, visaInfo }) => {
 
     const renderVisaItem = ({ item }) => (
         <View style={{ borderBottomWidth: 1, padding: 10 }}>
-            <Text>ID: {item.ID}</Text>
-            <Text>Visa Country: {item.visaCountry}</Text>
-            <Text>Visa Type: {item.visaType}</Text>
-            <Text>Cost: {item.cost}</Text>
+            <Text>ID визы: {item.ID}</Text>
+            <Text>Страна визы: {item.visaCountry}</Text>
+            <Text>Тип визы: {item.visaType}</Text>
+            <Text>Стоимость: {item.cost}</Text>
         </View>
     );
+
+    const validateAlphabetAndDash = (value) => {
+        return /^[а-яА-Яa-zA-Z-]*$/.test(value);
+    };
 
     const openSecondModal = () => {
         setSecondModalVisible(true);
@@ -132,8 +190,8 @@ const VisaBase = ({ visible, closeModal, visaInfo }) => {
                         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
                             <View style={{ backgroundColor: 'white', padding: 20, borderRadius: 10, width: '80%', height: '40%', flexDirection: 'column', justifyContent: 'space-between' }}>
                                 <View style={{ flexDirection: 'column', gap: '20%' }}>
-                                    <DefInput headline='Введите страну визы' text='Страна' active={true} onChange={(value) => setCountry(value)} />
-                                    <DefInput headline='Введите тип визы' text='Тип' active={true} onChange={(value) => setType(value)} />
+                                    <DefInput headline='Введите страну визы' text='Страна' active={true} onChange={(value) => setCountry(value)} validate={validateAlphabetAndDash} />
+                                    <DefInput headline='Введите тип визы' text='Тип' active={true} onChange={(value) => setType(value)} validate={validateAlphabetAndDash} />
                                     <DefInput headline='Введите цену визы' text='Цена' active={true} onChange={(value) => setCost(value)} theType='number-pad' />
                                 </View>
                                 {/*   */}
@@ -156,15 +214,15 @@ const UsersBase = ({ visible, closeModal, users }) => {
     const renderUser = ({ item }) => {
         return (
             <View style={{ borderBottomWidth: 1, padding: 10 }}>
-                <Text>ID: {item.id}</Text>
-                <Text>Username: {item.username}</Text>
-                <Text>Password: *****</Text>
-                <Text>Passport: {item.passport}</Text>
-                <Text>Date: {item.date}</Text>
-                <Text>First Name: {item.firstName}</Text>
-                <Text>Surname: {item.surname}</Text>
-                <Text>Father Name: {item.fatherName}</Text>
-                <Text>Document Path: {item.documentPath}</Text>
+                <Text>ID пользователя: {item.id}</Text>
+                <Text>Логин: {item.username}</Text>
+                <Text>Пароль: *****</Text>
+                <Text>Паспорт: {item.passport}</Text>
+                <Text>Дата рождения: {item.date}</Text>
+                <Text>Фамилия: {item.surname}</Text>
+                <Text>Имя: {item.firstName}</Text>
+                <Text>Отчество: {item.fatherName}</Text>
+                <Text>Путь к документу: {item.documentPath}</Text>
             </View>
         );
     };

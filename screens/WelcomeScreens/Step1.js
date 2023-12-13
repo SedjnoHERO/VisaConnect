@@ -10,7 +10,6 @@ export default function Step1({ navigation }) {
 
     useEffect(() => {
         if (storedLogin.username) {
-            console.log('isAdmin в юзефект:', isAdmin)
             if (storedLogin.isAdmin) {
                 console.log('Вы админ, вот вам и админ экран')
                 navigation.navigate('Admin');

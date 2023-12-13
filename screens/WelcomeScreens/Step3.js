@@ -15,9 +15,14 @@ export default function Step3({ navigation }) {
             <View style={gStyle.Welcomes_location.buttons_location}>
                 <View><Button_continue onPress={() => { navigation.navigate('Login') }} title='Авторизоваться' /></View>
                 <View><Button_continue onPress={() => { navigation.navigate('SignUp') }} title='Зарегистрироваться' /></View>
-                <View style={{ borderBottomWidth: 1, borderBottomColor: '#242424', width: 390, marginBottom: 10, marginTop: 65 }} />
+                {/* <View style={{ borderBottomWidth: 1, borderBottomColor: '#242424', width: 390, marginBottom: 10, marginTop: 65 }} />
                 <View style={[gStyle.TextColors.black, { marginBottom: 20 }]}><Text>или посетите наше приложение как гость</Text></View>
-                <View><Button_continue onPress={() => { navigation.navigate('Cards') }} underlayColor={gStyle.Colors.main_accent_color} ButtonStyle={{ backgroundColor: gStyle.Colors.secondary_accent_color }} /></View>
+                <View>
+                    <Button_continue
+                        onPress={() => { navigation.navigate('Cards') }}
+                        underlayColor={gStyle.Colors.main_accent_color}
+                        ButtonStyle={{ backgroundColor: gStyle.Colors.secondary_accent_color }} />
+                </View> */}
             </View>
         </View >
     );
